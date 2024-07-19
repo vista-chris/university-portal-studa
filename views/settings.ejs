@@ -1,0 +1,494 @@
+<%- include("./partials/header.ejs") %>
+    <%- include("./partials/nav.ejs") %>
+
+        <div class="container-fluid my-3 py-3">
+            <div class="row mb-5">
+                <div class="col-lg-12 mt-lg-0 mt-4">
+
+                    <div class="card card-body" id="profile">
+                        <div class="row justify-content-center align-items-center">
+                            <div class="col-sm-auto col-4">
+                                <div class="avatar bg-gradient-primary font-weight-bold">
+                                    <span>{{'<%= user.fname %>' | limitTo: 1}}</span>
+                                </div>
+                            </div>
+                            <div class="col-sm-auto col-8 my-auto">
+                                <div class="h-100">
+                                    <h5 class="mb-1 font-weight-bolder">
+                                        <%= user.fname %>
+                                            <%= user.lname %>
+                                    </h5>
+                                    <p class="mb-0 font-weight-bold text-sm">
+                                        <%= user.email %>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-sm-auto ms-sm-auto mt-sm-0 mt-3 d-flex">
+                                <label class="form-check-label mb-0">
+                                    <small id="profileVisibility">Switch to invisible</small>
+                                </label>
+                                <div class="form-check form-switch ms-2">
+                                    <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault23"
+                                        checked="" onchange="visible()">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-12 col-md-6 col-xl-4">
+                            <div class="card h-100">
+                                <div class="card-header pb-0 p-3">
+                                    <h6 class="mb-0">Platform Settings</h6>
+                                </div>
+                                <div class="card-body p-3">
+                                    <h6 class="text-uppercase text-body text-xs font-weight-bolder">Account</h6>
+                                    <ul class="list-group">
+                                        <li class="list-group-item border-0 px-0">
+                                            <div class="form-check form-switch ps-0">
+                                                <input class="form-check-input ms-auto" type="checkbox"
+                                                    id="flexSwitchCheckDefault" checked="">
+                                                <label class="form-check-label text-body ms-3 text-truncate w-80 mb-0"
+                                                    for="flexSwitchCheckDefault">Email me when someone follows
+                                                    me</label>
+                                            </div>
+                                        </li>
+                                        <li class="list-group-item border-0 px-0">
+                                            <div class="form-check form-switch ps-0">
+                                                <input class="form-check-input ms-auto" type="checkbox"
+                                                    id="flexSwitchCheckDefault1">
+                                                <label class="form-check-label text-body ms-3 text-truncate w-80 mb-0"
+                                                    for="flexSwitchCheckDefault1">Email me when someone answers on my
+                                                    post</label>
+                                            </div>
+                                        </li>
+                                        <li class="list-group-item border-0 px-0">
+                                            <div class="form-check form-switch ps-0">
+                                                <input class="form-check-input ms-auto" type="checkbox"
+                                                    id="flexSwitchCheckDefault2" checked="">
+                                                <label class="form-check-label text-body ms-3 text-truncate w-80 mb-0"
+                                                    for="flexSwitchCheckDefault2">Email me when someone mentions
+                                                    me</label>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                    <h6 class="text-uppercase text-body text-xs font-weight-bolder mt-4">Application
+                                    </h6>
+                                    <ul class="list-group">
+                                        <li class="list-group-item border-0 px-0">
+                                            <div class="form-check form-switch ps-0">
+                                                <input class="form-check-input ms-auto" type="checkbox"
+                                                    id="flexSwitchCheckDefault3">
+                                                <label class="form-check-label text-body ms-3 text-truncate w-80 mb-0"
+                                                    for="flexSwitchCheckDefault3">New launches and projects</label>
+                                            </div>
+                                        </li>
+                                        <li class="list-group-item border-0 px-0">
+                                            <div class="form-check form-switch ps-0">
+                                                <input class="form-check-input ms-auto" type="checkbox"
+                                                    id="flexSwitchCheckDefault4" checked="">
+                                                <label class="form-check-label text-body ms-3 text-truncate w-80 mb-0"
+                                                    for="flexSwitchCheckDefault4">Monthly product updates</label>
+                                            </div>
+                                        </li>
+                                        <li class="list-group-item border-0 px-0 pb-0">
+                                            <div class="form-check form-switch ps-0">
+                                                <input class="form-check-input ms-auto" type="checkbox"
+                                                    id="flexSwitchCheckDefault5">
+                                                <label class="form-check-label text-body ms-3 text-truncate w-80 mb-0"
+                                                    for="flexSwitchCheckDefault5">Subscribe to newsletter</label>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6 col-xl-4 mt-md-0 mt-4">
+                            <div class="card h-100">
+                                <div class="card-header pb-0 p-3">
+                                    <div class="row">
+                                        <div class="col-md-8 d-flex align-items-center">
+                                            <h6 class="mb-0">Profile Information</h6>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-body p-3">
+                                    <p class="text-sm">
+                                        Hi, I’m Alec Thompson, Decisions: If you can’t decide, the answer is no. If two
+                                        equally difficult paths, choose the one more painful in the short term (pain
+                                        avoidance is creating an illusion of equality).
+                                    </p>
+                                    <hr class="horizontal gray-light my-4">
+                                    <ul class="list-group">
+                                        <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong
+                                                class="text-dark">Full Name:</strong> &nbsp; Alec M. Thompson</li>
+                                        <li class="list-group-item border-0 ps-0 text-sm"><strong
+                                                class="text-dark">Mobile:</strong> &nbsp; (44) 123 1234 123</li>
+                                        <li class="list-group-item border-0 ps-0 text-sm"><strong
+                                                class="text-dark">Email:</strong> &nbsp; alecthompson@mail.com</li>
+                                        <li class="list-group-item border-0 ps-0 text-sm"><strong
+                                                class="text-dark">Location:</strong> &nbsp; USA</li>
+                                        <li class="list-group-item border-0 ps-0 pb-0">
+                                            <strong class="text-dark text-sm">Social:</strong> &nbsp;
+                                            <a class="btn btn-facebook btn-simple mb-0 ps-1 pe-2 py-0"
+                                                href="javascript:;">
+                                                <i class="fab fa-facebook fa-lg" aria-hidden="true"></i>
+                                            </a>
+                                            <a class="btn btn-twitter btn-simple mb-0 ps-1 pe-2 py-0"
+                                                href="javascript:;">
+                                                <i class="fab fa-twitter fa-lg" aria-hidden="true"></i>
+                                            </a>
+                                            <a class="btn btn-instagram btn-simple mb-0 ps-1 pe-2 py-0"
+                                                href="javascript:;">
+                                                <i class="fab fa-instagram fa-lg" aria-hidden="true"></i>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-xl-4 mt-xl-0 mt-4">
+                            <div class="card h-100">
+                                <div class="card-header pb-0 p-3">
+                                    <h6 class="mb-0">Change password</h6>
+                                </div>
+                                <div class="card-body p-3">
+                                    <form id="updatePasswordForm" name="updatePasswordForm" novalidate>
+                                        <label class="form-label">Current password</label>
+                                        <div class="form-group">
+                                            <input ng-model="currentPassword" id="currentPassword"
+                                                name="currentPassword" class="form-control" type="password"
+                                                placeholder="Current password" onfocus="focused(this)"
+                                                onfocusout="defocused(this)" required>
+                                        </div>
+                                        <label class="form-label">New password</label>
+                                        <div class="form-group">
+                                            <input ng-model="newPassword" id="newPassword" name="newPassword"
+                                                class="form-control" type="password" placeholder="New password"
+                                                onfocus="focused(this)" onfocusout="defocused(this)" required>
+                                        </div>
+                                        <label class="form-label">Confirm new password</label>
+                                        <div class="form-group">
+                                            <input ng-model="confirmPassword" id="confirmPassword"
+                                                name="confirmPassword" class="form-control" type="password"
+                                                placeholder="Confirm password" onfocus="focused(this)"
+                                                onfocusout="defocused(this)" required>
+                                        </div>
+                                        <h5 class="mt-5">Password requirements</h5>
+                                        <p class="text-muted mb-2">
+                                            Please follow this guide for a strong password:
+                                        </p>
+                                        <ul class="text-muted ps-4 mb-0 float-start">
+                                            <li>
+                                                <span class="text-sm">One special characters</span>
+                                            </li>
+                                            <li>
+                                                <span class="text-sm">Min 6 characters</span>
+                                            </li>
+                                            <li>
+                                                <span class="text-sm">One number (2 are recommended)</span>
+                                            </li>
+                                            <li>
+                                                <span class="text-sm">Change it often</span>
+                                            </li>
+                                        </ul>
+                                        <button ng-click="updatePassword()"
+                                            ng-disabled="updatePasswordForm.currentPassword.$invalid || updatePasswordForm.newPassword.$invalid || updatePasswordForm.confirmPassword.$invalid || newPassword != confirmPassword"
+                                            id="btn-updatePassword"
+                                            class="btn bg-gradient-dark btn-sm float-end mt-6 mb-0">Update
+                                            password</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card mt-4" id="2fa">
+                        <div class="card-header d-flex">
+                            <h5 class="mb-0">Two-factor authentication</h5>
+                            <span class="badge badge-success ms-auto">Enabled</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="d-flex">
+                                <p class="my-auto">Security keys</p>
+                                <p class="text-secondary text-sm ms-auto my-auto me-3">No Security Keys</p>
+                                <button class="btn btn-sm btn-outline-dark mb-0" type="button">Add</button>
+                            </div>
+                            <hr class="horizontal dark">
+                            <div class="d-flex">
+                                <p class="my-auto">SMS number</p>
+                                <p class="text-secondary text-sm ms-auto my-auto me-3">+4012374423</p>
+                                <button class="btn btn-sm btn-outline-dark mb-0" type="button">Edit</button>
+                            </div>
+                            <hr class="horizontal dark">
+                            <div class="d-flex">
+                                <p class="my-auto">Current period</p>
+
+                                <input ng-model="period"
+                                    class="form-control form-control-sm ms-sm-auto mt-sm-0 mt-2 w-sm-15 me-3"
+                                    type="text" value="{{period}}" onfocus="focused(this)" onfocusout="defocused(this)"
+                                    placeholder="1990/JAN-APR">
+                                <button ng-click="addPeriod()" class="btn btn-sm btn-outline-dark mb-0"
+                                    type="button">Set up</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card mt-4" id="notifications">
+                        <div class="card-header">
+                            <h5>Notifications</h5>
+                            <p class="text-sm">Choose how you receive notifications. These notification settings apply
+                                to the things you’re watching.</p>
+                        </div>
+                        <div class="card-body pt-0">
+                            <div class="table-responsive">
+                                <table class="table mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th class="ps-1" colspan="4">
+                                                <p class="mb-0">Activity</p>
+                                            </th>
+                                            <th class="text-center">
+                                                <p class="mb-0">Email</p>
+                                            </th>
+                                            <th class="text-center">
+                                                <p class="mb-0">Push</p>
+                                            </th>
+                                            <th class="text-center">
+                                                <p class="mb-0">SMS</p>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="ps-1" colspan="4">
+                                                <div class="my-auto">
+                                                    <span class="text-dark d-block text-sm">Mentions</span>
+                                                    <span class="text-xs font-weight-normal">Notify when another user
+                                                        mentions you in a comment</span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div
+                                                    class="form-check form-switch mb-0 d-flex align-items-center justify-content-center">
+                                                    <input class="form-check-input" checked="" type="checkbox"
+                                                        id="flexSwitchCheckDefault11">
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div
+                                                    class="form-check form-switch mb-0 d-flex align-items-center justify-content-center">
+                                                    <input class="form-check-input" type="checkbox"
+                                                        id="flexSwitchCheckDefault12">
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div
+                                                    class="form-check form-switch mb-0 d-flex align-items-center justify-content-center">
+                                                    <input class="form-check-input" type="checkbox"
+                                                        id="flexSwitchCheckDefault13">
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="ps-1" colspan="4">
+                                                <div class="my-auto">
+                                                    <span class="text-dark d-block text-sm">Comments</span>
+                                                    <span class="text-xs font-weight-normal">Notify when another user
+                                                        comments your item.</span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div
+                                                    class="form-check form-switch mb-0 d-flex align-items-center justify-content-center">
+                                                    <input class="form-check-input" checked="" type="checkbox"
+                                                        id="flexSwitchCheckDefault14">
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div
+                                                    class="form-check form-switch mb-0 d-flex align-items-center justify-content-center">
+                                                    <input class="form-check-input" checked="" type="checkbox"
+                                                        id="flexSwitchCheckDefault15">
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div
+                                                    class="form-check form-switch mb-0 d-flex align-items-center justify-content-center">
+                                                    <input class="form-check-input" type="checkbox"
+                                                        id="flexSwitchCheckDefault16">
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="ps-1" colspan="4">
+                                                <div class="my-auto">
+                                                    <span class="text-dark d-block text-sm">Follows</span>
+                                                    <span class="text-xs font-weight-normal">Notify when another user
+                                                        follows you.</span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div
+                                                    class="form-check form-switch mb-0 d-flex align-items-center justify-content-center">
+                                                    <input class="form-check-input" type="checkbox"
+                                                        id="flexSwitchCheckDefault17">
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div
+                                                    class="form-check form-switch mb-0 d-flex align-items-center justify-content-center">
+                                                    <input class="form-check-input" checked="" type="checkbox"
+                                                        id="flexSwitchCheckDefault18">
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div
+                                                    class="form-check form-switch mb-0 d-flex align-items-center justify-content-center">
+                                                    <input class="form-check-input" type="checkbox"
+                                                        id="flexSwitchCheckDefault19">
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="ps-1" colspan="4">
+                                                <div class="my-auto">
+                                                    <p class="text-sm mb-0">Log in from a new device</p>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div
+                                                    class="form-check form-switch mb-0 d-flex align-items-center justify-content-center">
+                                                    <input class="form-check-input" checked="" type="checkbox"
+                                                        id="flexSwitchCheckDefault20">
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div
+                                                    class="form-check form-switch mb-0 d-flex align-items-center justify-content-center">
+                                                    <input class="form-check-input" checked="" type="checkbox"
+                                                        id="flexSwitchCheckDefault21">
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div
+                                                    class="form-check form-switch mb-0 d-flex align-items-center justify-content-center">
+                                                    <input class="form-check-input" checked="" type="checkbox"
+                                                        id="flexSwitchCheckDefault22">
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card mt-4" id="sessions">
+                        <div class="card-header pb-3">
+                            <h5>Sessions</h5>
+                            <p class="text-sm">This is a list of devices that have logged into your account. Remove
+                                those that you do not recognize.</p>
+                        </div>
+                        <div class="card-body pt-0">
+                            <div class="d-flex align-items-center">
+                                <div class="text-center w-5">
+                                    <i class="fas fa-desktop text-lg opacity-6" aria-hidden="true"></i>
+                                </div>
+                                <div class="my-auto ms-3">
+                                    <div class="h-100">
+                                        <p class="text-sm mb-1">
+                                            Bucharest 68.133.163.201
+                                        </p>
+                                        <p class="mb-0 text-xs">
+                                            Your current session
+                                        </p>
+                                    </div>
+                                </div>
+                                <span class="badge badge-success badge-sm my-auto ms-auto me-3">Active</span>
+                                <p class="text-secondary text-sm my-auto me-3">EU</p>
+                                <a href="javascript:;" class="text-primary text-sm icon-move-right my-auto">See more
+                                    <i class="fas fa-arrow-right text-xs ms-1" aria-hidden="true"></i>
+                                </a>
+                            </div>
+                            <hr class="horizontal dark">
+                            <div class="d-flex align-items-center">
+                                <div class="text-center w-5">
+                                    <i class="fas fa-desktop text-lg opacity-6" aria-hidden="true"></i>
+                                </div>
+                                <p class="my-auto ms-3">Chrome on macOS</p>
+                                <p class="text-secondary text-sm ms-auto my-auto me-3">US</p>
+                                <a href="javascript:;" class="text-primary text-sm icon-move-right my-auto">See more
+                                    <i class="fas fa-arrow-right text-xs ms-1" aria-hidden="true"></i>
+                                </a>
+                            </div>
+                            <hr class="horizontal dark">
+                            <div class="d-flex align-items-center">
+                                <div class="text-center w-5">
+                                    <i class="fas fa-mobile text-lg opacity-6" aria-hidden="true"></i>
+                                </div>
+                                <p class="my-auto ms-3">Safari on iPhone</p>
+                                <p class="text-secondary text-sm ms-auto my-auto me-3">US</p>
+                                <a href="javascript:;" class="text-primary text-sm icon-move-right my-auto">See more
+                                    <i class="fas fa-arrow-right text-xs ms-1" aria-hidden="true"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card mt-4" id="delete">
+                        <div class="card-header">
+                            <h5>Delete Account</h5>
+                            <p class="text-sm mb-0">Once you delete your account, there is no going back. Please be
+                                certain.</p>
+                        </div>
+                        <div class="card-body d-sm-flex pt-0">
+                            <div class="d-flex align-items-center mb-sm-0 mb-4">
+                                <div>
+                                    <div class="form-check form-switch mb-0">
+                                        <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault0">
+                                    </div>
+                                </div>
+                                <div class="ms-2">
+                                    <span class="text-dark font-weight-bold d-block text-sm">Confirm</span>
+                                    <span class="text-xs d-block">I want to delete my account.</span>
+                                </div>
+                            </div>
+                            <button class="btn btn-outline-secondary mb-0 ms-auto" type="button"
+                                name="button">Deactivate</button>
+                            <button class="btn bg-gradient-danger mb-0 ms-2" type="button" name="button">Delete
+                                Account</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <footer class="footer py-5">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-8 mx-auto text-center mt-1">
+                            <small class="mb-0 text-secondary">
+                                Copyright
+                                <script>
+                                    document.write(new Date().getFullYear())
+                                </script> &copy; All rights reserved
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+
+        <%- include("./partials/footer.ejs") %>
+
+            <script>
+                if (document.getElementById('type')) {
+                    var element = document.getElementById('type');
+                    const example = new Choices(element, {});
+                }
+                if (document.getElementById('session')) {
+                    var element = document.getElementById('session');
+                    const example = new Choices(element, {});
+                }
+                if (document.getElementById('status')) {
+                    var element = document.getElementById('status');
+                    const example = new Choices(element, {});
+                }
+            </script>

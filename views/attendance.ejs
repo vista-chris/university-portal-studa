@@ -1,0 +1,469 @@
+<%- include("./partials/header.ejs") %>
+    <%- include("./partials/nav.ejs") %>
+        <div class="container-fluid py-4">
+            <div class="d-sm-flex justify-content-between">
+                <div class="d-flex my-auto">
+                    <div>
+                        <select ng-model="data_limit" id="data_limit" name="data_limit" class="form-control mx-3">
+                            <option disabled>Page size</option>
+                            <option selected="" value="10">10</option>
+                            <option value="20">20</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="d-flex">
+                    <div class="dropdown d-inline">
+                        <a href="javascript:;" class="btn btn-outline-dark dropdown-toggle" data-bs-toggle="dropdown"
+                            id="navbarDropdownMenuLink2" aria-expanded="false">
+                            Filters
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-lg-start px-2 py-3"
+                            aria-labelledby="navbarDropdownMenuLink2" style="">
+                            <li ng-repeat="s in periods"><a ng-click="btnFilter(s.name)"
+                                    class="dropdown-item border-radius-md" href="javascript:;">{{s.name}}</a></li>
+                            <li>
+                                <hr class="horizontal dark my-2">
+                            </li>
+                            <li><a ng-click="deleteAttendance()" class="dropdown-item border-radius-md text-danger"
+                                    href="javascript:;">Delete Selected</a></li>
+                        </ul>
+                    </div>
+                    <button class="btn btn-icon btn-outline-dark ms-2 export" data-type="csv" type="button">
+                        <span class="btn-inner--icon"><i class="ni ni-archive-2"></i></span>
+                        <span class="btn-inner--text">Export CSV</span>
+                    </button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="font-weight-bolder text-dark text-gradient">Attendance</h4>
+                            <p class="text-sm mb-0">To view the attendance records for a specific class, click on the
+                                class name.</p>
+                        </div>
+                        <div class="dataTable-wrapper dataTable-loading no-footer sortable searchable fixed-columns">
+                            <div class="dataTable-container table-responsive">
+                                <table class="table table-hover table-flush dataTable-table" id="attendance-table"
+                                    hidden="">
+                                    <thead class="thead-light">
+                                        <tr>
+                                            <th data-sortable="" style="width: 20.9375%;"><a
+                                                    ng-click="sort_with('code');" href="#"
+                                                    class="dataTable-sorter">Code</a></th>
+                                            <th data-sortable="" style="width: 27.6563%;"><a
+                                                    ng-click="sort_with('name');" href="#"
+                                                    class="dataTable-sorter">Unit</a></th>
+                                            <th data-sortable="" style="width: 22.8125%;"><a
+                                                    ng-click="sort_with('period');" href="#"
+                                                    class="dataTable-sorter">period</a></th>
+                                            <th data-sortable="" style="width: 20.9375%;"><a
+                                                    ng-click="sort_with('lecturer');" href="#"
+                                                    class="dataTable-sorter">Lecturer</a></th>
+                                            <th data-sortable="" style="width: 15.3125%;"><a
+                                                    ng-click="sort_with('date');" href="#"
+                                                    class="dataTable-sorter">Created</a></th>
+                                            <th data-sortable="" style="width: 10.3125%;"><a href="#">info</a>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr
+                                            ng-repeat="s in searched = (attendance | filter:mySearch | orderBy : base :reverse) | beginning_data:(current_grid-1)*data_limit | limitTo:data_limit">
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input"
+                                                            value="{{s.attendancerecords._id}}" type="checkbox"
+                                                            name="attendanceCheck" id="attendanceCheck">
+                                                    </div>
+                                                    <p class="text-xs font-weight-bold ms-2 mb-0">
+                                                        {{s.attendancerecords.code | limitTo: 7}}...</p>
+                                                </div>
+                                            </td>
+                                            <td class="text-xs font-weight-bold">
+                                                <a ng-click="fetchUnitAttendance(s.attendancerecords._id, s.units.code, s.units.name, s.attendancerecords.createdAt)"
+                                                    href="#">
+                                                    <div class="d-flex align-items-center">
+                                                        <div class="d-flex align-items-center">
+                                                            <div ng-show="(s.units.name | limitTo: 1) == 'A' || (s.units.name | limitTo: 1) == 'B' || (s.units.name | limitTo: 1) == 'C' || (s.units.name | limitTo: 1) == 'D' || (s.units.name | limitTo: 1) == 'E' || (s.units.name | limitTo: 1) == 'F'"
+                                                                class="avatar avatar-xs me-2 bg-gradient-dark">
+                                                                <span>{{s.units.name | limitTo: 1}}</span>
+                                                            </div>
+                                                            <div ng-show="(s.units.name | limitTo: 1) == 'G' || (s.units.name | limitTo: 1) == 'H' || (s.units.name | limitTo: 1) == 'I' || (s.units.name | limitTo: 1) == 'J' || (s.units.name | limitTo: 1) == 'K' || (s.units.name | limitTo: 1) == 'L'"
+                                                                class="avatar avatar-xs me-2 bg-gradient-primary">
+                                                                <span>{{s.units.name | limitTo: 1}}</span>
+                                                            </div>
+                                                            <div ng-show="(s.units.name | limitTo: 1) == 'M' || (s.units.name | limitTo: 1) == 'N' || (s.units.name | limitTo: 1) == 'O' || (s.units.name | limitTo: 1) == 'P' || (s.units.name | limitTo: 1) == 'Q' || (s.units.name | limitTo: 1) == 'R' || (s.units.name | limitTo: 1) == 'Z'"
+                                                                class="avatar avatar-xs me-2 bg-gradient-info">
+                                                                <span>{{s.units.name | limitTo: 1}}</span>
+                                                            </div>
+                                                            <div ng-show="(s.units.name | limitTo: 1) == 'S' || (s.units.name | limitTo: 1) == 'T' || (s.units.name | limitTo: 1) == 'U' || (s.units.name | limitTo: 1) == 'V' || (s.units.name | limitTo: 1) == 'W' || (s.units.name | limitTo: 1) == 'X' || (s.units.name | limitTo: 1) == 'Y'"
+                                                                class="avatar avatar-xs me-2 bg-gradient-success">
+                                                                <span>{{s.units.name | limitTo: 1}}</span>
+                                                            </div>
+                                                            <div class="flex-column">
+                                                                <p class="text-xs text-secondary mb-0">
+                                                                    {{s.units.code}}</p>
+                                                                <h6 class="text-xs">{{s.units.name}}
+                                                                </h6>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </td>
+                                            <td class="text-xs font-weight-bold">
+                                                <div class="flex-column">
+                                                    <h6 class="text-xs">{{s.offeredunits.period}}</h6>
+                                                    <p class="text-xs text-secondary mb-0">
+                                                        {{s.courses.code}}</p>
+                                                </div>
+                                            </td>
+                                            <td class="text-xs font-weight-bold">
+                                                <span class="my-2 text-xs">{{s.users.title}}. {{s.users.fname}}
+                                                    {{s.users.lname}}</span>
+                                            </td>
+                                            <td class="font-weight-bold">
+                                                <div class="flex-column">
+                                                    <h6 class="text-xs">{{s.attendancerecords.createdAt | date:
+                                                        'dd-MM-yyyy'}}
+                                                    </h6>
+                                                    <p class="text-xs text-secondary mb-0">
+                                                        {{s.attendancerecords.createdAt | date:'hh:mm:ss a'}}</p>
+                                                </div>
+                                            </td>
+                                            <td class="text-xs font-weight-bold">
+                                                <button
+                                                    ng-click="unitAttendanceHistory(s.offeredunits._id, s.units.code, s.units.name, s.offeredunits.period)"
+                                                    type="button"
+                                                    class="btn btn-icon-only btn-rounded btn-outline-info mb-0 ms-2 btn-sm d-flex align-items-center justify-content-center ms-auto"
+                                                    data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                                    aria-label="Click to view class attendance"
+                                                    data-bs-original-title="See which websites are sending traffic to your website">
+                                                    <i class="fas fa-info" aria-hidden="true"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="dataTable-bottom">
+                                <div class="dataTable-info">Showing {{ searched.length }} of {{ attendance.length}}
+                                    entries</div>
+                                <nav class="dataTable-pagination">
+                                    <div pagination="" page="current_grid" on-select-page="page_position(page)"
+                                        total-items="attendance.length" items-per-page="data_limit" max-size="3"
+                                        class="dataTable-pagination-list font-weight-bold" previous-text="‹"
+                                        next-text="›"></div>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <footer class="footer py-5">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-8 mx-auto text-center mt-1">
+                            <small class="mb-0 text-secondary">
+                                Copyright
+                                <script>
+                                    document.write(new Date().getFullYear())
+                                </script> &copy; All rights reserved
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+
+        <!--unit attendance history-->
+        <div class="modal fade" id="modalUnitAttendanceHistory" tabindex="-1" role="dialog"
+            aria-labelledby="modalUnitAttendanceHistory" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered " role="document">
+                <div class="modal-content">
+                    <div class="modal-body p-0">
+                        <div class="card card-plain">
+                            <div class="card-header pb-0 text-left">
+                                <h4 class="font-weight-bolder text-dark text-gradient">Unit attendance - {{unitPeriod}}
+                                </h4>
+                                <small>{{unitCode}} {{unitName}}</small>
+                            </div>
+                            <div class="card-body px-0 pb-3">
+                                <div
+                                    class="dataTable-wrapper dataTable-loading no-footer sortable searchable fixed-columns">
+                                    <div class="dataTable-container">
+                                        <table class="table table-hover table-flush dataTable-table table-responsive">
+                                            <thead class="thead-light">
+                                                <tr>
+                                                    <th style="width: 10.9375%;">Student</th>
+                                                    <th ng-repeat="s in dates" style="width: 10.6563%;">{{s}}</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr
+                                                    ng-repeat="s in stds | beginning_data:(current_grid-1)*data_limit | limitTo:data_limit">
+                                                    <td>
+                                                        <div class="d-flex align-items-center">
+                                                            <div class="form-check">
+                                                                <input class="form-check-input"
+                                                                    value="{{s.attendancerecords._id}}" type="checkbox"
+                                                                    name="attendanceCheck" id="attendanceCheck">
+                                                            </div>
+                                                            <a
+                                                                class="text-xs font-weight-bold" href="#">
+                                                                <div class="d-flex align-items-center">
+                                                                    <div ng-show="(s[0].students.fname | limitTo: 1) == 'A' || (s[0].students.fname | limitTo: 1) == 'B' || (s[0].students.fname | limitTo: 1) == 'C' || (s[0].students.fname | limitTo: 1) == 'D' || (s[0].students.fname | limitTo: 1) == 'E' || (s[0].students.fname | limitTo: 1) == 'F'"
+                                                                        class="avatar avatar-xs me-2 bg-gradient-dark">
+                                                                        <span>{{s[0].students.fname | limitTo:
+                                                                            1}}</span>
+                                                                    </div>
+                                                                    <div ng-show="(s[0].students.fname | limitTo: 1) == 'G' || (s[0].students.fname | limitTo: 1) == 'H' || (s[0].students.fname | limitTo: 1) == 'I' || (s[0].students.fname | limitTo: 1) == 'J' || (s[0].students.fname | limitTo: 1) == 'K' || (s[0].students.fname | limitTo: 1) == 'L'"
+                                                                        class="avatar avatar-xs me-2 bg-gradient-primary">
+                                                                        <span>{{s[0].students.fname | limitTo:
+                                                                            1}}</span>
+                                                                    </div>
+                                                                    <div ng-show="(s[0].students.fname | limitTo: 1) == 'M' || (s[0].students.fname | limitTo: 1) == 'N' || (s[0].students.fname | limitTo: 1) == 'O' || (s[0].students.fname | limitTo: 1) == 'P' || (s[0].students.fname | limitTo: 1) == 'Q' || (s[0].students.fname | limitTo: 1) == 'R' || (s[0].students.fname | limitTo: 1) == 'Z'"
+                                                                        class="avatar avatar-xs me-2 bg-gradient-info">
+                                                                        <span>{{s[0].students.fname | limitTo:
+                                                                            1}}</span>
+                                                                    </div>
+                                                                    <div ng-show="(s[0].students.fname | limitTo: 1) == 'S' || (s[0].students.fname | limitTo: 1) == 'T' || (s[0].students.fname | limitTo: 1) == 'U' || (s[0].students.fname | limitTo: 1) == 'V' || (s[0].students.fname | limitTo: 1) == 'W' || (s[0].students.fname | limitTo: 1) == 'X' || (s[0].students.fname | limitTo: 1) == 'Y'"
+                                                                        class="avatar avatar-xs me-2 bg-gradient-success">
+                                                                        <span>{{s[0].students.fname | limitTo:
+                                                                            1}}</span>
+                                                                    </div>
+                                                                    <div class="flex-column">
+                                                                        <h6 class="text-xs">{{s[0].students.fname}}
+                                                                            {{s[0].students.mname}}
+                                                                            {{s[0].students.lname}}
+                                                                        </h6>
+                                                                        <p class="text-xs text-secondary mb-0">
+                                                                            {{s[0].students.email}}</p>
+                                                                    </div>
+                                                                </div>
+                                                            </a>
+                                                        </div>
+                                                    </td>
+                                                    <td ng-repeat="d in stds[$index]" class="text-xs font-weight-bold">
+                                                        <span ng-show="d.attendancedetails.status === true"
+                                                            class="badge badge-success badge-sm text-xs">Verified</span>
+                                                        <span ng-show="d.attendancedetails.status === false"
+                                                            class="badge badge-danger badge-sm text-xs">Absent</span>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                            <thead class="thead-light">
+                                                <tr>
+                                                    <th style="width: 10.9375%;">Student</th>
+                                                    <th ng-repeat="s in dates">Week
+                                                        {{$index+1}}</th>
+                                                </tr>
+                                            </thead>
+                                        </table>
+                                    </div>
+                                    <div class="dataTable-bottom">
+                                        <div class="dataTable-info">Showing {{ stds.length }} of {{ stds.length}}
+                                            entries</div>
+                                        <nav class="dataTable-pagination">
+                                            <div pagination="" page="current_grid" on-select-page="page_position(page)"
+                                                total-items="stds.length" items-per-page="data_limit" max-size="3"
+                                                class="dataTable-pagination-list font-weight-bold" previous-text="‹"
+                                                next-text="›"></div>
+                                        </nav>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer text-secondary pt-0 px-sm-4 px-1">
+                                <small style="font-size: 13px;">&copy; By using this website, you agree to be bound by,
+                                    <a href="#" class="text-primary text-gradient" data-container="body"
+                                        data-bs-toggle="popover" data-bs-placement="left"
+                                        data-bs-content="
+                                            1. Acceptance of Terms and Conditions. These terms and conditions (“Terms and Conditions”) govern your use of this website, including all pages within this website (collectively referred to herein below as this “Website”). These Terms & Conditions are binding and enforceable against all persons that access this Website. By accessing this Website, you acknowledge that you have read, understand, and agree, without limitation or qualification, to be bound by these Terms and Conditions.
+                                            2. Modification of Terms and Conditions. We reserve the right to change these Terms and Conditions at any time. Such changes, modifications, additions or deletions shall be effective immediately upon notice thereof, which may be given by means including, but not limited to, posting on this Website. Any use of this Website by you after such notice shall be deemed to constitute acceptance by you of such changes, modifications or additions.
+                                            3. Use of Website. This Website is owned and operated by us. You may not copy, reproduce" data-container="body"
+                                        data-animation="true">Terms & Conditions</a> set forth. If
+                                    you do not agree with
+                                    any of these Terms & Conditions, please do not use this website.</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--unit attendance history-->
+        <div class="modal fade" id="modalUnitAttendance" tabindex="-1" role="dialog"
+            aria-labelledby="modalUnitAttendance" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered " role="document">
+                <div class="modal-content">
+                    <div class="modal-body p-0">
+                        <div class="card card-plain">
+                            <div class="card-header pb-0 text-left">
+                                <h4 class="font-weight-bolder text-dark text-gradient">Attendance - {{attendanceDate |
+                                    date:
+                                    'dd-MM-yyyy'}}</h4>
+                                <small>{{unitCode}} {{unitName}}</small>
+                            </div>
+                            <div class="card-body px-0 pb-3">
+                                <div
+                                    class="dataTable-wrapper dataTable-loading no-footer sortable searchable fixed-columns">
+                                    <div class="dataTable-container">
+                                        <table class="table table-hover table-flush dataTable-table table-responsive">
+                                            <tbody>
+                                                <tr
+                                                    ng-repeat="s in unitAttendance | beginning_data:(current_grid-1)*data_limit | limitTo:data_limit">
+                                                    <td class="text-xs font-weight-bold">
+                                                        <a ng-click="studentUnitAttendanceHistory(s.attendancerecords.unit, s.students._id, s.students.adm, s.students.fname)"
+                                                            href="#">
+                                                            <div class="d-flex align-items-center">
+                                                                <div class="d-flex align-items-center">
+                                                                    <div ng-show="(s.students.fname | limitTo: 1) == 'A' || (s.students.fname | limitTo: 1) == 'B' || (s.students.fname | limitTo: 1) == 'C' || (s.students.fname | limitTo: 1) == 'D' || (s.students.fname | limitTo: 1) == 'E' || (s.students.fname | limitTo: 1) == 'F'"
+                                                                        class="avatar avatar-xs me-2 bg-gradient-dark">
+                                                                        <span>{{s.students.fname | limitTo:
+                                                                            1}}</span>
+                                                                    </div>
+                                                                    <div ng-show="(s.students.fname | limitTo: 1) == 'G' || (s.students.fname | limitTo: 1) == 'H' || (s.students.fname | limitTo: 1) == 'I' || (s.students.fname | limitTo: 1) == 'J' || (s.students.fname | limitTo: 1) == 'K' || (s.students.fname | limitTo: 1) == 'L'"
+                                                                        class="avatar avatar-xs me-2 bg-gradient-primary">
+                                                                        <span>{{s.students.fname | limitTo:
+                                                                            1}}</span>
+                                                                    </div>
+                                                                    <div ng-show="(s.students.fname | limitTo: 1) == 'M' || (s.students.fname | limitTo: 1) == 'N' || (s.students.fname | limitTo: 1) == 'O' || (s.students.fname | limitTo: 1) == 'P' || (s.students.fname | limitTo: 1) == 'Q' || (s.students.fname | limitTo: 1) == 'R' || (s.students.fname | limitTo: 1) == 'Z'"
+                                                                        class="avatar avatar-xs me-2 bg-gradient-info">
+                                                                        <span>{{s.students.fname | limitTo:
+                                                                            1}}</span>
+                                                                    </div>
+                                                                    <div ng-show="(s.students.fname | limitTo: 1) == 'S' || (s.students.fname | limitTo: 1) == 'T' || (s.students.fname | limitTo: 1) == 'U' || (s.students.fname | limitTo: 1) == 'V' || (s.students.fname | limitTo: 1) == 'W' || (s.students.fname | limitTo: 1) == 'X' || (s.students.fname | limitTo: 1) == 'Y'"
+                                                                        class="avatar avatar-xs me-2 bg-gradient-success">
+                                                                        <span>{{s.students.fname | limitTo:
+                                                                            1}}</span>
+                                                                    </div>
+                                                                    <div class="flex-column">
+                                                                        <p class="text-xs text-secondary mb-0">
+                                                                            {{s.students.adm}}</p>
+                                                                        <h6 class="text-xs">{{s.students.fname}}
+                                                                            {{s.students.mname}}
+                                                                            {{s.students.lname}}
+                                                                        </h6>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </a>
+                                                    </td>
+                                                    <td class="text-xs font-weight-bold">
+                                                        <span class="my-2 text-xs">{{s.students.gender}}</span>
+                                                    </td>
+                                                    <td class="text-xs font-weight-bold">
+                                                        <span ng-show="s.attendancedetails.status === true"
+                                                            class="badge badge-success badge-sm text-xs">Verified</span>
+                                                        <span ng-show="s.attendancedetails.status === false"
+                                                            class="badge badge-danger badge-sm text-xs">Absent</span>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="dataTable-bottom">
+                                        <div class="dataTable-info">Showing {{ unitAttendance.length }} of {{
+                                            unitAttendance.length}}
+                                            entries</div>
+                                        <nav class="dataTable-pagination">
+                                            <div pagination="" page="current_grid" on-select-page="page_position(page)"
+                                                total-items="unitAttendance.length" items-per-page="data_limit"
+                                                max-size="3" class="dataTable-pagination-list font-weight-bold"
+                                                previous-text="‹" next-text="›"></div>
+                                        </nav>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer text-secondary pt-0 px-sm-4 px-1">
+                                <small style="font-size: 13px;">&copy; By using this website, you agree to be bound by,
+                                    <a href="#" class="text-primary text-gradient" data-container="body"
+                                        data-bs-toggle="popover" data-bs-placement="left"
+                                        data-bs-content="
+                                                1. Acceptance of Terms and Conditions. These terms and conditions (“Terms and Conditions”) govern your use of this website, including all pages within this website (collectively referred to herein below as this “Website”). These Terms & Conditions are binding and enforceable against all persons that access this Website. By accessing this Website, you acknowledge that you have read, understand, and agree, without limitation or qualification, to be bound by these Terms and Conditions.
+                                                2. Modification of Terms and Conditions. We reserve the right to change these Terms and Conditions at any time. Such changes, modifications, additions or deletions shall be effective immediately upon notice thereof, which may be given by means including, but not limited to, posting on this Website. Any use of this Website by you after such notice shall be deemed to constitute acceptance by you of such changes, modifications or additions.
+                                                3. Use of Website. This Website is owned and operated by us. You may not copy, reproduce" data-container="body"
+                                        data-animation="true">Terms & Conditions</a> set forth. If
+                                    you do not agree with
+                                    any of these Terms & Conditions, please do not use this website.</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--attendance history-->
+        <div class="modal fade" id="modalAttendanceHistory" tabindex="-1" role="dialog"
+            aria-labelledby="modalAttendanceHistory" aria-hidden="true">
+            <div class="modal-dialog modal-sm modal-dialog-centered " role="document">
+                <div class="modal-content">
+                    <div class="modal-body p-0">
+                        <div class="card card-plain">
+                            <div class="card-header pb-0 text-left">
+                                <h4 class="font-weight-bolder text-dark text-gradient">{{studentCode}} {{studentName}}
+                                </h4>
+                                <small>{{unitCode}} {{unitName}}</small>
+                            </div>
+                            <div class="card-body pb-3">
+                                <div class="row">
+                                    <div class="col-4 text-start my-auto">
+                                        <span class="badge badge-md badge-dot d-block">
+                                            <i class="bg-info"></i>
+                                            <span class="text-dark text-xs">Present</span>
+                                        </span>
+                                        <span class="badge badge-md badge-dot d-block">
+                                            <i class="bg-dark"></i>
+                                            <span class="text-dark text-xs">Absent</span>
+                                        </span>
+                                    </div>
+                                    <div class="col-8 my-auto">
+                                        <div class="chart">
+                                            <canvas id="chart-pie" class="chart-canvas"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <table class="table my-4">
+                                        <tr ng-repeat="s in attendanceDetails | filter: unitId | filter: studentId">
+                                            <td class="font-weight-bold">
+                                                <div class="flex-column">
+                                                    <h6 class="text-xs">{{s.attendancerecords.createdAt |
+                                                        date:'MM/dd/yyyy'}}
+                                                    </h6>
+                                                    <p class="text-xs text-secondary mb-0">
+                                                        {{s.attendancerecords.createdAt | date:'hh:mm:ss a'}}</p>
+                                                </div>
+                                            </td>
+                                            <td class="font-weight-bold">
+                                                <span ng-show="s.attendancedetails.status === true"
+                                                    class="badge badge-success badge-sm text-xs">Verified</span>
+                                                <span ng-show="s.attendancedetails.status === false"
+                                                    class="badge badge-danger badge-sm text-xs">Absent</span>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="card-footer text-secondary pt-0 px-sm-4 px-1">
+                                <small style="font-size: 13px;">&copy; By using this website, you agree to be bound by,
+                                    <a href="#" class="text-primary text-gradient" data-container="body"
+                                        data-bs-toggle="popover" data-bs-placement="left"
+                                        data-bs-content="
+                                                1. Acceptance of Terms and Conditions. These terms and conditions (“Terms and Conditions”) govern your use of this website, including all pages within this website (collectively referred to herein below as this “Website”). These Terms & Conditions are binding and enforceable against all persons that access this Website. By accessing this Website, you acknowledge that you have read, understand, and agree, without limitation or qualification, to be bound by these Terms and Conditions.
+                                                2. Modification of Terms and Conditions. We reserve the right to change these Terms and Conditions at any time. Such changes, modifications, additions or deletions shall be effective immediately upon notice thereof, which may be given by means including, but not limited to, posting on this Website. Any use of this Website by you after such notice shall be deemed to constitute acceptance by you of such changes, modifications or additions.
+                                                3. Use of Website. This Website is owned and operated by us. You may not copy, reproduce" data-container="body"
+                                        data-animation="true">Terms & Conditions</a> set forth. If
+                                    you do not agree with
+                                    any of these Terms & Conditions, please do not use this website.</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <%- include("./partials/footer.ejs") %>

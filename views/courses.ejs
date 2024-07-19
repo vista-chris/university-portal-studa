@@ -1,0 +1,348 @@
+<%- include("./partials/header.ejs") %>
+    <%- include("./partials/nav.ejs") %>
+        <div class="container-fluid py-4">
+            <div class="d-sm-flex justify-content-between">
+                <div class="d-flex my-auto">
+                    <div>
+                        <a href="#" data-bs-toggle="modal" data-bs-target="#modalCourse"
+                            class="btn btn-icon bg-gradient-dark">
+                            Add course
+                        </a>
+                    </div>
+                    <div>
+                        <select ng-model="data_limit" id="data_limit" name="data_limit" class="form-control mx-3">
+                            <option disabled>Page size</option>
+                            <option selected="" value="10">10</option>
+                            <option value="20">20</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="d-flex">
+                    <div class="dropdown d-inline">
+                        <a href="javascript:;" class="btn btn-outline-dark dropdown-toggle" data-bs-toggle="dropdown"
+                            id="navbarDropdownMenuLink2" aria-expanded="false">
+                            Filters
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-lg-start px-2 py-3"
+                            aria-labelledby="navbarDropdownMenuLink2" style="">
+                            <li ng-repeat="s in faculties"><a ng-click="btnFilter(s.code)"
+                                    class="dropdown-item border-radius-md" href="javascript:;">{{s.code}}</a></li>
+                            <li>
+                            <li>
+                                <hr class="horizontal dark my-2">
+                            </li>
+                            <li><a ng-click="deleteCourse()" class="dropdown-item border-radius-md text-danger"
+                                    href="javascript:;">Delete Selected</a></li>
+                        </ul>
+                    </div>
+                    <button class="btn btn-icon btn-outline-dark ms-2 export" data-type="csv" type="button">
+                        <span class="btn-inner--icon"><i class="ni ni-archive-2"></i></span>
+                        <span class="btn-inner--text">Export CSV</span>
+                    </button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="font-weight-bolder text-dark text-gradient">Courses</h4>
+                            <p class="text-sm mb-0">
+                                This is a list of all of the courses that are available in the system.
+                            </p>
+                        </div>
+                        <div class="dataTable-wrapper dataTable-loading no-footer sortable searchable fixed-columns">
+                            <div class="dataTable-container table-responsive">
+                                <table class="table table-hover table-flush dataTable-table" id="courses-table" hidden="">
+                                    <thead class="thead-light">
+                                        <tr>
+                                            <th data-sortable=""><a ng-click="sort_with('code');" href="#"
+                                                    class="dataTable-sorter">Faculty</a></th>
+                                            <th data-sortable=""><a ng-click="sort_with('course');" href="#"
+                                                    class="dataTable-sorter">Course
+                                                    Name</a></th>
+                                            <th data-sortable=""><a ng-click="sort_with('type');" href="#"
+                                                    class="dataTable-sorter">Type</a></th>
+                                            <th data-sortable=""><a ng-click="sort_with('status');" href="#"
+                                                    class="dataTable-sorter">Status</a>
+                                            </th>
+                                            <th data-sortable=""><a ng-click="sort_with('date');" href="#"
+                                                    class="dataTable-sorter">Created</a>
+                                            </th>
+                                            <th data-sortable=""><a href="#">Update</a>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr
+                                            ng-repeat="s in searched = (courses | filter:mySearch | orderBy : base :reverse) | beginning_data:(current_grid-1)*data_limit | limitTo:data_limit">
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    <div class="form-check">
+                                                        <input ng-disabled="s.status === false" class="form-check-input"
+                                                            value="{{s._id}}" type="checkbox" name="courseCheck"
+                                                            id="courseCheck">
+                                                    </div>
+                                                    <span
+                                                        class="text-xs font-weight-bold ms-2 mb-0">{{s.faculties.code}}</span>
+                                                </div>
+                                            </td>
+                                            <td class="text-xs font-weight-bold">
+                                                <a ng-click="aboutCourse(s.courses._id, s.courses.code, s.courses.name, s.courses.description, s.courses.type)"
+                                                    href="#">
+                                                    <div class="d-flex align-items-center">
+                                                        <div class="d-flex align-items-center">
+                                                            <div ng-show="(s.courses.name | limitTo: 1) == 'A' || (s.courses.name | limitTo: 1) == 'B' || (s.courses.name | limitTo: 1) == 'G' || (s.courses.name | limitTo: 1) == 'M' || (s.courses.name | limitTo: 1) == 'E' || (s.courses.name | limitTo: 1) == 'F'"
+                                                                class="avatar avatar-xs me-2 bg-gradient-dark">
+                                                                <span>{{s.courses.name | limitTo: 1}}</span>
+                                                            </div>
+                                                            <div ng-show="(s.courses.name | limitTo: 1) == 'C' || (s.courses.name | limitTo: 1) == 'H' || (s.courses.name | limitTo: 1) == 'I' || (s.courses.name | limitTo: 1) == 'J' || (s.courses.name | limitTo: 1) == 'K' || (s.courses.name | limitTo: 1) == 'L'"
+                                                                class="avatar avatar-xs me-2 bg-gradient-primary">
+                                                                <span>{{s.courses.name | limitTo: 1}}</span>
+                                                            </div>
+                                                            <div ng-show="(s.courses.name | limitTo: 1) == 'D' || (s.courses.name | limitTo: 1) == 'N' || (s.courses.name | limitTo: 1) == 'O' || (s.courses.name | limitTo: 1) == 'P' || (s.courses.name | limitTo: 1) == 'Q' || (s.courses.name | limitTo: 1) == 'R' || (s.courses.name | limitTo: 1) == 'Z'"
+                                                                class="avatar avatar-xs me-2 bg-gradient-info">
+                                                                <span>{{s.courses.name | limitTo: 1}}</span>
+                                                            </div>
+                                                            <div ng-show="(s.courses.name | limitTo: 1) == 'S' || (s.courses.name | limitTo: 1) == 'T' || (s.courses.name | limitTo: 1) == 'U' || (s.courses.name | limitTo: 1) == 'V' || (s.courses.name | limitTo: 1) == 'W' || (s.courses.name | limitTo: 1) == 'X' || (s.courses.name | limitTo: 1) == 'Y'"
+                                                                class="avatar avatar-xs me-2 bg-gradient-success">
+                                                                <span>{{s.courses.name | limitTo: 1}}</span>
+                                                            </div>
+                                                            <div class="flex-column">
+                                                                <p class="text-xs text-secondary mb-0">
+                                                                    {{s.courses.code}}</p>
+                                                                <h6 class="text-xs">{{s.courses.name}}
+                                                                </h6>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </td>
+                                            <td class="text-xs font-weight-bold">
+                                                <span class="my-2 text-xs">
+                                                    {{s.courses.type}}
+                                                </span>
+                                            </td>
+                                            <td class="text-xs font-weight-bold">
+                                                <span ng-show="s.courses.status === true" class="badge badge-dot me-4">
+                                                    <i class="bg-success"></i>
+                                                    <span class="text-dark text-xs">Active</span>
+                                                </span>
+                                                <span ng-show="s.courses.status === false" class="badge badge-dot me-4">
+                                                    <i class="bg-danger"></i>
+                                                    <span class="text-dark text-xs">Suspended</span>
+                                                </span>
+                                            </td>
+                                            <td class="font-weight-bold">
+                                                <span class="my-2 text-xs">{{s.courses.createdAt | date:
+                                                    'dd-MM-yyyy'}}</span>
+                                            </td>
+                                            <td class="text-xs font-weight-bold">
+                                                <div class="d-flex align-items-center">
+                                                    <button
+                                                        ng-click="updateCourse(s.courses._id, s.courses.code, s.courses.name, s.courses.description, s.courses.type, s.faculties._id, s.courses.status)"
+                                                        class="btn btn-icon-only btn-rounded btn-outline-info mb-0 me-2 btn-sm d-flex align-items-center justify-content-center"><i
+                                                            class="fa-solid fa-rotate" aria-hidden="true"></i></button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="dataTable-bottom">
+                                <div class="dataTable-info">Showing {{ searched.length }} of {{ courses.length}}
+                                    entries</div>
+                                <nav class="dataTable-pagination">
+                                    <div pagination="" page="current_grid" on-select-page="page_position(page)"
+                                        total-items="courses.length" items-per-page="data_limit" max-size="3"
+                                        class="dataTable-pagination-list font-weight-bold" previous-text="‹"
+                                        next-text="›"></div>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <footer class="footer py-5">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-8 mx-auto text-center mt-1">
+                            <small class="mb-0 text-secondary">
+                                Copyright
+                                <script>
+                                    document.write(new Date().getFullYear())
+                                </script> &copy; All rights reserved
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+
+        <div class="modal fade" id="modalCourse" tabindex="-1" role="dialog" aria-labelledby="modalCourse"
+            aria-hidden="true">
+            <div class="modal-dialog modal- modal-dialog-centered " role="document">
+                <div class="modal-content">
+                    <div class="modal-body p-0">
+                        <div class="card card-plain">
+                            <div class="card-header pb-0 text-left">
+                                <h4 class="font-weight-bolder text-dark text-gradient">{{title}} course</h4>
+                                <small>Enter the course information into the appropriate fields.</small>
+                            </div>
+                            <div class="card-body pb-3">
+                                <form id="courseForm" name="courseForm" role="form text-left" novalidate>
+                                    <div class="row">
+                                        <div class="col-12 col-sm-4">
+                                            <label>Course Code</label>
+                                            <input ng-model="code" id="code" name="code" class="form-control"
+                                                type="text" placeholder="Enter Code" autofocus="on"
+                                                onfocus="focused(this)" onfocusout="defocused(this)" required>
+                                        </div>
+                                        <div class="col-12 col-sm-8">
+                                            <label>Course Name</label>
+                                            <input ng-model="name" id="name" name="name" class="form-control validate"
+                                                type="text" placeholder="Enter Name" onfocus="focused(this)"
+                                                onfocusout="defocused(this)" required>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-3">
+                                        <div class="col-12 col-sm-12">
+                                            <label>Course Description</label>
+                                            <textarea ng-model="description" class="form-control" name="description"
+                                                id="description" rows="5" placeholder="Enter Description"
+                                                required></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-3">
+                                        <div class="col-12 col-sm-5">
+                                            <label>Course Type</label>
+                                            <select ng-model="type" class="form-control validate" name="type" id="type"
+                                                required>
+                                                <option value="Undergraduate">Postgraduate</option>
+                                                <option value="Undergraduate">Undergraduate</option>
+                                                <option value="Diploma">Diploma</option>
+                                                <option value="Certificate">Certificate</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-12 col-sm-7">
+                                            <label>Course Faculty</label>
+                                            <select ng-model="faculty" class="form-control validate" name="faculty"
+                                                id="faculty" required>
+                                                <option ng-repeat="s in faculties" value="{{s._id}}">{{s.name}}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-3">
+                                        <div class="col-12 col-sm-7">
+                                            <label>Unit Status</label>
+                                            <div class="form-check form-switch ms-2">
+                                                <input ng-model="status" class="form-check-input" type="checkbox"
+                                                    id="status">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="button-row mt-4">
+                                        <button ng-click="saveCourse()"
+                                            ng-disabled="courseForm.code.$invalid || courseForm.name.$invalid || courseForm.description.$invalid || courseForm.type.$invalid || courseForm.faculty.$invalid"
+                                            id="btn-saveCourse" class="btn bg-gradient-primary ms-auto mb-0"
+                                            type="submit">Submit</button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="card-footer text-secondary pt-0 px-sm-4 px-1">
+                                <small style="font-size: 13px;">&copy; By using this website, you agree to be bound by,
+                                    <a href="#" class="text-primary text-gradient" data-container="body" data-bs-toggle="popover" data-bs-placement="left"
+                                        data-bs-content="
+                                            1. Acceptance of Terms and Conditions. These terms and conditions (“Terms and Conditions”) govern your use of this website, including all pages within this website (collectively referred to herein below as this “Website”). These Terms & Conditions are binding and enforceable against all persons that access this Website. By accessing this Website, you acknowledge that you have read, understand, and agree, without limitation or qualification, to be bound by these Terms and Conditions.
+                                            2. Modification of Terms and Conditions. We reserve the right to change these Terms and Conditions at any time. Such changes, modifications, additions or deletions shall be effective immediately upon notice thereof, which may be given by means including, but not limited to, posting on this Website. Any use of this Website by you after such notice shall be deemed to constitute acceptance by you of such changes, modifications or additions.
+                                            3. Use of Website. This Website is owned and operated by us. You may not copy, reproduce"
+                                        data-container="body" data-animation="true">Terms & Conditions</a> set forth. If
+                                    you do not agree with
+                                    any of these Terms & Conditions, please do not use this website.</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="modalAboutCourse" tabindex="-1" role="dialog" aria-labelledby="modalAboutCourse"
+            aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered " role="document">
+                <div class="modal-content">
+                    <div class="modal-body p-0">
+                        <div class="card card-plain">
+                            <div class="card-header pb-0 text-left">
+                                <h4 class="font-weight-bolder text-dark text-gradient">{{name}} ({{code}})</h4>
+                                <small>{{type}} course</small>
+                            </div>
+                            <div class="card-body pb-3">
+                                <h5>Course description</h5>
+                                <p>{{description}}</p>
+                                <h5>Course units</h5>
+                                <br>
+                                <h6 class="text-primary text-gradient">1st Year 1st Semester</h6>
+                                <p ng-repeat="s in units | filter: id | filter: '1st Year 1st Sem'">{{s.units.code}}
+                                    {{s.units.name}}</p>
+                                <br>
+                                <h6 class="text-primary text-gradient">1st Year 2nd Semester</h6>
+                                <p ng-repeat="s in units | filter: id | filter: '1st Year 2nd Sem'">{{s.units.code}}
+                                    {{s.units.name}}</p>
+                                <br>
+                                <h6 class="text-primary text-gradient">2nd Year 1st Semester</h6>
+                                <p ng-repeat="s in units | filter: id | filter: '2nd Year 1st Sem'">{{s.units.code}}
+                                    {{s.units.name}}</p>
+                                <br>
+                                <h6 class="text-primary text-gradient">2nd Year 2nd Semester</h6>
+                                <p ng-repeat="s in units | filter: id | filter: '2nd Year 2nd Sem'">{{s.units.code}}
+                                    {{s.units.name}}</p>
+                                <br>
+                                <h6 class="text-primary text-gradient">3rd Year 1st Semester</h6>
+                                <p ng-repeat="s in units | filter: id | filter: '3rd Year 1st Sem'">{{s.units.code}}
+                                    {{s.units.name}}</p>
+                                <br>
+                                <h6 class="text-primary text-gradient">3rd Year 2nd Semester</h6>
+                                <p ng-repeat="s in units | filter: id | filter: '3rd Year 2nd Sem'">{{s.units.code}}
+                                    {{s.units.name}}</p>
+                                <br>
+                                <h6 class="text-primary text-gradient">4th Year 1st Semester</h6>
+                                <p ng-repeat="s in units | filter: id | filter: '4th Year 1st Sem'">{{s.units.code}}
+                                    {{s.units.name}}</p>
+                                <br>
+                                <h6 class="text-primary text-gradient">4th Year 2nd Semester</h6>
+                                <p ng-repeat="s in units | filter: id | filter: '4th Year 2nd Sem'">{{s.units.code}}
+                                    {{s.units.name}}</p>
+                                <br>
+                                <h5>Faculty</h5>
+                                <p ng-repeat="s in facultyLec">{{s}}</p>
+                            </div>
+                            <div class="card-footer text-secondary pt-0 px-sm-4 px-1">
+                                <small style="font-size: 13px;">&copy; By using this website, you agree to be bound by,
+                                    <a href="#" class="text-primary text-gradient" data-container="body" data-bs-toggle="popover" data-bs-placement="left"
+                                        data-bs-content="
+                                            1. Acceptance of Terms and Conditions. These terms and conditions (“Terms and Conditions”) govern your use of this website, including all pages within this website (collectively referred to herein below as this “Website”). These Terms & Conditions are binding and enforceable against all persons that access this Website. By accessing this Website, you acknowledge that you have read, understand, and agree, without limitation or qualification, to be bound by these Terms and Conditions.
+                                            2. Modification of Terms and Conditions. We reserve the right to change these Terms and Conditions at any time. Such changes, modifications, additions or deletions shall be effective immediately upon notice thereof, which may be given by means including, but not limited to, posting on this Website. Any use of this Website by you after such notice shall be deemed to constitute acceptance by you of such changes, modifications or additions.
+                                            3. Use of Website. This Website is owned and operated by us. You may not copy, reproduce"
+                                        data-container="body" data-animation="true">Terms & Conditions</a> set forth. If
+                                    you do not agree with
+                                    any of these Terms & Conditions, please do not use this website.</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <%- include("./partials/footer.ejs") %>
+
+            <script>
+                //if (document.getElementById('type')) {
+                //    var element = document.getElementById('type');
+                //    const example = new Choices(element, {});
+                //}
+                //if (document.getElementById('status')) {
+                //    var element = document.getElementById('status');
+                //    const example = new Choices(element, {});
+                //}
+            </script>

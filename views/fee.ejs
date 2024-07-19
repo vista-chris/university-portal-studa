@@ -1,0 +1,515 @@
+<%- include("./partials/header.ejs") %>
+    <%- include("./partials/nav.ejs") %>
+        <div class="container-fluid py-4">
+            <div class="row">
+                <div class="col-4">
+                    <div class="nav-wrapper position-relative end-0">
+                        <ul class="nav nav-pills nav-fill p-1" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link mb-0 px-0 py-1 active" data-bs-toggle="tab" href="#statements"
+                                    role="tab" aria-controls="statements" aria-selected="true">
+                                    Statements
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link mb-0 px-0 py-1" data-bs-toggle="tab" href="#payments" role="tab"
+                                    aria-controls="payments" aria-selected="false">
+                                    Payments
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="tab-content mt-4">
+                        <div class="tab-pane fade show active" id="statements" role="tabpanel"
+                            aria-labelledby="statements">
+                            <div class="row mt-4">
+                                <div class="col-12">
+                                    <h4 class="font-weight-bolder text-dark text-gradient">Fee statements</h4>
+                                    <p class="text-sm w-75">
+                                        From this page, students can find information about the
+                                        professors that teach at the school. This includes their contact
+                                        information, office hours, and course offerings.
+                                    </p>
+                                </div>
+                                <div class="mt-4">
+                                    <div class="d-sm-flex justify-content-between">
+                                        <div class="d-flex my-auto">
+                                            <div>
+                                                <a href="#" data-bs-toggle="modal" data-bs-target="#modalHall"
+                                                    class="btn btn-icon bg-gradient-dark">
+                                                    Add Hall
+                                                </a>
+                                            </div>
+                                            <div>
+                                                <select ng-model="data_limit" id="data_limit" name="data_limit"
+                                                    class="form-control mx-3">
+                                                    <option disabled>Page size</option>
+                                                    <option selected="" value="10">10</option>
+                                                    <option value="20">20</option>
+                                                    <option value="50">50</option>
+                                                    <option value="100">100</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex">
+                                            <button onclick="printStatement()"
+                                                class="btn btn-icon btn-outline-dark ms-2" data-type="csv"
+                                                type="button">
+                                                <span class="btn-inner--icon"><i class="fa-solid fa-print"></i></span>
+                                                <span class="btn-inner--text">Print</span>
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="card">
+                                                <div
+                                                    class="dataTable-wrapper dataTable-loading no-footer sortable searchable fixed-columns">
+                                                    <div class="dataTable-container table-responsive">
+                                                        <table class="table table-hover table-flush dataTable-table"
+                                                            id="fee-statements-table" hidden="">
+                                                            <thead class="thead-light">
+                                                                <tr>
+                                                                    <th data-sortable="">
+                                                                        <a ng-click="sort_with('code');" href="#"
+                                                                            class="dataTable-sorter">Session</a>
+                                                                    </th>
+                                                                    <th data-sortable="">
+                                                                        <a ng-click="sort_with('name');" href="#"
+                                                                            class="dataTable-sorter">Amount Payable
+                                                                        </a>
+                                                                    </th>
+                                                                    <th data-sortable="">
+                                                                        <a ng-click="sort_with('capacity');" href="#"
+                                                                            class="dataTable-sorter">
+                                                                            Amount Paid</a>
+                                                                    </th>
+                                                                    <th data-sortable="">
+                                                                        <a ng-click="sort_with('faculty');" href="#"
+                                                                            class="dataTable-sorter">Balance</a>
+                                                                    </th>
+                                                                    <th data-sortable="">
+                                                                        <a ng-click="sort_with('date');" href="#"
+                                                                            class="dataTable-sorter">Excess</a>
+                                                                    </th>
+                                                                    <th data-sortable="">
+                                                                        <a ng-click="sort_with('date');" href="#"
+                                                                            class="dataTable-sorter">Date</a>
+                                                                    </th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr
+                                                                    ng-repeat="s in searched = (feeStatements | filter:mySearch | orderBy : base :reverse) | beginning_data:(current_grid-1)*data_limit | limitTo:data_limit">
+                                                                    <td class="text-xs font-weight-bold">
+                                                                        <div class="d-flex align-items-center">
+                                                                            <div class="d-flex align-items-center">
+                                                                                <button
+                                                                                    class="btn btn-icon-only btn-rounded btn-outline-info mb-0 me-2 btn-sm d-flex align-items-center justify-content-center">
+                                                                                    <i class="fa-solid fa-rotate"
+                                                                                        aria-hidden="true"></i>
+                                                                                </button>
+                                                                                <div class="flex-column">
+                                                                                    <h6 class="text-xs">
+                                                                                        {{ s.semesters.period }}
+                                                                                    </h6>
+                                                                                    <p
+                                                                                        class="text-xs text-secondary mb-0">
+                                                                                        {{ s.semesters.session }}
+                                                                                    </p>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td class="text-xs font-weight-bold">
+                                                                        <span class="my-2 text-xs">
+                                                                            {{ s.academics.payable }}
+                                                                        </span>
+                                                                    </td>
+                                                                    <td class="text-xs font-weight-bold">
+                                                                        <span class="my-2 text-xs">
+                                                                            {{ s.academics.paid }}
+                                                                        </span>
+                                                                    </td>
+                                                                    <td class="text-xs font-weight-bold">
+                                                                        <span class="my-2 text-xs">
+                                                                            {{ s.academics.balance }}
+                                                                        </span>
+                                                                    </td>
+                                                                    <td class="text-xs font-weight-bold">
+                                                                        <span class="my-2 text-xs">
+                                                                            {{ s.academics.excess }}
+                                                                        </span>
+                                                                    </td>
+                                                                    <td class="text-xs font-weight-bold">
+                                                                        <span class="my-2 text-xs">
+                                                                            {{
+                                                                            s.academics.createdAt | date : "dd-MM-yyyy"
+                                                                            }}
+                                                                        </span>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                    <div class="dataTable-bottom">
+                                                        <div class="dataTable-info">
+                                                            Showing {{ searched.length }} of
+                                                            {{ feeStatements.length }} entries
+                                                        </div>
+                                                        <nav class="dataTable-pagination">
+                                                            <div pagination="" page="current_grid"
+                                                                on-select-page="page_position(page)"
+                                                                total-items="feeStatements.length"
+                                                                items-per-page="data_limit" max-size="3"
+                                                                class="dataTable-pagination-list font-weight-bold"
+                                                                previous-text="‹" next-text="›"></div>
+                                                        </nav>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-pane fade" id="payments" role="tabpanel" aria-labelledby="payments">
+                            <div class="row mt-4">
+                                <div class="col-12">
+                                    <h4 class="font-weight-bolder text-dark text-gradient">Fee payments</h4>
+                                    <p class="text-sm w-75">
+                                        From this page, students can find information about the
+                                        professors that teach at the school. This includes their contact
+                                        information, office hours, and course offerings.
+                                    </p>
+                                </div>
+                                <div class="mt-4">
+                                    <div class="d-sm-flex justify-content-between">
+                                        <div class="d-flex my-auto">
+                                            <div>
+                                                <a href="#" data-bs-toggle="modal" data-bs-target="#modalHall"
+                                                    class="btn btn-icon bg-gradient-dark">
+                                                    Add Hall
+                                                </a>
+                                            </div>
+                                            <div>
+                                                <select ng-model="data_limit" id="data_limit" name="data_limit"
+                                                    class="form-control mx-3">
+                                                    <option disabled>Page size</option>
+                                                    <option selected="" value="10">10</option>
+                                                    <option value="20">20</option>
+                                                    <option value="50">50</option>
+                                                    <option value="100">100</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex">
+                                            <div class="dropdown d-inline">
+                                                <a href="javascript:;" class="btn btn-outline-dark dropdown-toggle"
+                                                    data-bs-toggle="dropdown" id="navbarDropdownMenuLink2"
+                                                    aria-expanded="false">
+                                                    Filters
+                                                </a>
+                                                <ul class="dropdown-menu dropdown-menu-lg-start px-2 py-3"
+                                                    aria-labelledby="navbarDropdownMenuLink2" style="">
+                                                    <li ng-repeat="s in faculties">
+                                                        <a ng-click="btnFilter(s.code)"
+                                                            class="dropdown-item border-radius-md"
+                                                            href="javascript:;">{{ s.code }}</a>
+                                                    </li>
+                                                    <li>
+                                                        <hr class="horizontal dark my-2" />
+                                                    </li>
+                                                    <li>
+                                                        <a ng-click="deleteHall()"
+                                                            class="dropdown-item border-radius-md text-danger"
+                                                            href="javascript:;">Delete Selected</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <button class="btn btn-icon btn-outline-dark ms-2 export" data-type="csv"
+                                                type="button">
+                                                <span class="btn-inner--icon"><i class="ni ni-archive-2"></i></span>
+                                                <span class="btn-inner--text">Export CSV</span>
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="card">
+                                                <div
+                                                    class="dataTable-wrapper dataTable-loading no-footer sortable searchable fixed-columns">
+                                                    <div class="dataTable-container table-responsive">
+                                                        <table class="table table-hover table-flush dataTable-table"
+                                                            id="datatable-search">
+                                                            <thead class="thead-light">
+                                                                <tr>
+                                                                    <th data-sortable="">
+                                                                        <a ng-click="sort_with('code');" href="#"
+                                                                            class="dataTable-sorter">Sno.</a>
+                                                                    </th>
+                                                                    <th data-sortable="">
+                                                                        <a ng-click="sort_with('name');" href="#"
+                                                                            class="dataTable-sorter">Date
+                                                                        </a>
+                                                                    </th>
+                                                                    <th data-sortable="">
+                                                                        <a ng-click="sort_with('capacity');" href="#"
+                                                                            class="dataTable-sorter">
+                                                                            Transaction Mode</a>
+                                                                    </th>
+                                                                    <th data-sortable="">
+                                                                        <a ng-click="sort_with('faculty');" href="#"
+                                                                            class="dataTable-sorter">Transaction
+                                                                            Code</a>
+                                                                    </th>
+                                                                    <th data-sortable="">
+                                                                        <a ng-click="sort_with('date');" href="#"
+                                                                            class="dataTable-sorter">Amount</a>
+                                                                    </th>
+                                                                    <th data-sortable="">
+                                                                        <a ng-click="sort_with('date');" href="#"
+                                                                            class="dataTable-sorter">Status</a>
+                                                                    </th>
+                                                                    <th data-sortable=""><a href="#">Update</a></th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr
+                                                                    ng-repeat="s in searched = (halls | filter:mySearch | orderBy : base :reverse) | beginning_data:(current_grid-1)*data_limit | limitTo:data_limit">
+                                                                    <td>
+                                                                        <div class="d-flex align-items-center">
+                                                                            <div class="form-check">
+                                                                                <input class="form-check-input"
+                                                                                    value="{{ s.halls._id }}"
+                                                                                    type="checkbox" name="hallCheck"
+                                                                                    id="hallCheck" />
+                                                                            </div>
+                                                                            <span
+                                                                                class="text-xs font-weight-bold ms-2 mb-0">
+                                                                                {{ s.halls.code }}
+                                                                            </span>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td class="text-xs font-weight-bold">
+                                                                        <a ng-click="aboutCourse(s._id, s.code, s.name, s.description, s.type)"
+                                                                            href="#">
+                                                                            <div class="d-flex align-items-center">
+                                                                                <div class="d-flex align-items-center">
+                                                                                    <div ng-show="
+                                          (s.halls.name | limitTo : 1) == 'A' ||
+                                          (s.halls.name | limitTo : 1) == 'B' ||
+                                          (s.halls.name | limitTo : 1) == 'G' ||
+                                          (s.halls.name | limitTo : 1) == 'M' ||
+                                          (s.halls.name | limitTo : 1) == 'E' ||
+                                          (s.halls.name | limitTo : 1) == 'F'
+                                        " class="avatar avatar-xs me-2 bg-gradient-dark">
+                                                                                        <span>{{
+                                                                                            s.halls.name | limitTo : 1
+                                                                                            }}</span>
+                                                                                    </div>
+                                                                                    <div ng-show="
+                                          (s.halls.name | limitTo : 1) == 'C' ||
+                                          (s.halls.name | limitTo : 1) == 'H' ||
+                                          (s.halls.name | limitTo : 1) == 'I' ||
+                                          (s.halls.name | limitTo : 1) == 'J' ||
+                                          (s.halls.name | limitTo : 1) == 'K' ||
+                                          (s.halls.name | limitTo : 1) == 'L'
+                                        " class="avatar avatar-xs me-2 bg-gradient-primary">
+                                                                                        <span>{{
+                                                                                            s.halls.name | limitTo : 1
+                                                                                            }}</span>
+                                                                                    </div>
+                                                                                    <div ng-show="
+                                          (s.halls.name | limitTo : 1) == 'D' ||
+                                          (s.halls.name | limitTo : 1) == 'N' ||
+                                          (s.halls.name | limitTo : 1) == 'O' ||
+                                          (s.nhalls.name | limitTo : 1) ==
+                                            'P' ||
+                                          (s.halls.name | limitTo : 1) == 'Q' ||
+                                          (s.halls.name | limitTo : 1) == 'R' ||
+                                          (s.halls.name | limitTo : 1) == 'Z'
+                                        " class="avatar avatar-xs me-2 bg-gradient-info">
+                                                                                        <span>{{
+                                                                                            s.halls.name | limitTo : 1
+                                                                                            }}</span>
+                                                                                    </div>
+                                                                                    <div ng-show="
+                                          (s.halls.name | limitTo : 1) == 'S' ||
+                                          (s.halls.name | limitTo : 1) == 'T' ||
+                                          (s.halls.name | limitTo : 1) == 'U' ||
+                                          (s.halls.name | limitTo : 1) == 'V' ||
+                                          (s.halls.name | limitTo : 1) == 'W' ||
+                                          (s.halls.name | limitTo : 1) == 'X' ||
+                                          (s.halls.name | limitTo : 1) == 'Y'
+                                        " class="avatar avatar-xs me-2 bg-gradient-success">
+                                                                                        <span>{{
+                                                                                            s.halls.name | limitTo : 1
+                                                                                            }}</span>
+                                                                                    </div>
+                                                                                    <div class="flex-column">
+                                                                                        <h6 class="text-xs">
+                                                                                            {{ s.halls.name }}
+                                                                                        </h6>
+                                                                                        <p
+                                                                                            class="text-xs text-secondary mb-0">
+                                                                                            {{ s.faculties.name }}
+                                                                                        </p>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </a>
+                                                                    </td>
+                                                                    <td class="text-xs font-weight-bold">
+                                                                        <span class="my-2 text-xs">
+                                                                            {{ s.halls.capacity }}
+                                                                        </span>
+                                                                    </td>
+                                                                    <td class="text-xs font-weight-bold">
+                                                                        <span class="my-2 text-xs">
+                                                                            {{ s.faculties.code }}
+                                                                        </span>
+                                                                    </td>
+                                                                    <td class="text-xs font-weight-bold">
+                                                                        <span class="my-2 text-xs">
+                                                                            {{ s.halls.createdAt | date : "dd-MM-yyyy"
+                                                                            }}
+                                                                        </span>
+                                                                    </td>
+                                                                    <td class="text-xs font-weight-bold">
+                                                                        <span class="my-2 text-xs">
+                                                                            {{ s.halls.updatedAt | date : "dd-MM-yyyy"
+                                                                            }}
+                                                                        </span>
+                                                                    </td>
+                                                                    <td class="text-xs font-weight-bold">
+                                                                        <div class="d-flex align-items-center">
+                                                                            <button
+                                                                                ng-click="updateHall(s.halls._id, s.halls.name, s.halls.capacity, s.faculties._id)"
+                                                                                class="btn btn-icon-only btn-rounded btn-outline-info mb-0 me-2 btn-sm d-flex align-items-center justify-content-center">
+                                                                                <i class="fa-solid fa-rotate"
+                                                                                    aria-hidden="true"></i>
+                                                                            </button>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                    <div class="dataTable-bottom">
+                                                        <div class="dataTable-info">
+                                                            Showing {{ searched.length }} of
+                                                            {{ halls.length }} entries
+                                                        </div>
+                                                        <nav class="dataTable-pagination">
+                                                            <div pagination="" page="current_grid"
+                                                                on-select-page="page_position(page)"
+                                                                total-items="halls.length" items-per-page="data_limit"
+                                                                max-size="3"
+                                                                class="dataTable-pagination-list font-weight-bold"
+                                                                previous-text="‹" next-text="›"></div>
+                                                        </nav>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <footer class="footer py-5">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-8 mx-auto text-center mt-1">
+                            <small class="mb-0 text-secondary">
+                                Copyright
+                                <script>
+                                    document.write(new Date().getFullYear());
+                                </script>
+                                &copy; All rights reserved
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+
+        <!-- Add Hall -->
+        <div class="modal fade" id="modalHall" tabindex="-1" role="dialog" aria-labelledby="modalHall"
+            aria-hidden="true">
+            <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-body p-0">
+                        <div class="card card-plain">
+                            <div class="card-header pb-0 text-left">
+                                <h4 class="font-weight-bolder">{{ title }} hall</h4>
+                                <small>Enter the hall information into the appropriate fields.</small>
+                            </div>
+                            <div class="card-body pb-3">
+                                <form id="hallForm" name="hallForm" role="form text-left" novalidate>
+                                    <div class="row mt-3">
+                                        <div class="col-12 col-sm-12">
+                                            <label>Hall Name</label>
+                                            <input ng-model="name" id="name" name="name" class="form-control validate"
+                                                type="text" placeholder="Enter Name" onfocus="focused(this)"
+                                                onfocusout="defocused(this)" required />
+                                        </div>
+                                    </div>
+                                    <div class="row mt-3">
+                                        <div class="col-12 col-sm-12">
+                                            <label>Max Capacity</label>
+                                            <input ng-model="capacity" id="capacity" name="capacity"
+                                                class="form-control validate" type="number"
+                                                placeholder="Enter Max Capacity" onfocus="focused(this)"
+                                                onfocusout="defocused(this)" required />
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-sm-12">
+                                        <label>Hall Faculty</label>
+                                        <select ng-model="faculty" class="form-control validate" name="faculty"
+                                            id="faculty" required>
+                                            <option selected="" disabled>Hall Faculty</option>
+                                            <option ng-repeat="s in faculties" value="{{ s._id }}">
+                                                {{ s.name }}
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div class="button-row mt-4">
+                                        <button ng-click="saveHall()"
+                                            ng-disabled="hallForm.name.$invalid || hallForm.capacity.$invalid || hallForm.faculty.$invalid"
+                                            id="btn-saveHall" class="btn bg-gradient-primary ms-auto mb-0"
+                                            type="submit">
+                                            Submit
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="card-footer text-center pt-0 px-sm-4 px-1"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <%- include("./partials/footer.ejs") %>
+
+        <script>
+            function printStatement() {
+                const divToPrint = document.getElementById("statements-table");
+                newWin = window.open("");
+                newWin.document.write(divToPrint.outerHTML);
+                newWin.print();
+                newWin.close();
+            }
+        </script>

@@ -1,0 +1,64 @@
+<%- include("./partials/header.ejs") %>
+
+    <body ng-app="myApp" ng-controller="myCtrl">
+        <div class="container">
+            <div class="row justify-content-center align-items-center">
+                <div class="col-xl-4 col-lg-5 col-md-7 mx-lg-0 align-self-center">
+                    <div class="card card-plain">
+                        <div class="card-header pb-0 text-start">
+                            <h4 class="font-weight-bolder text-dark text-gradient">Student login</h4>
+                            <p class="text-sm mb-0">Enter your admission and password to login</p>
+                        </div>
+                        <div class="card-body">
+                            <form role="form" id="loginForm" name="loginForm" novalidate>
+                                <div class="mb-3">
+                                    <input ng-model="studentAdmission" id="studentAdmission" name="studentAdmission"
+                                        type="text" class="form-control form-control-lg validate"
+                                        placeholder="Admission" aria-label="Admission" autocomplete="off" autofocus="on"
+                                        onfocus="focused(this)" required>
+                                </div>
+                                <div class="mb-3">
+                                    <input ng-model="studentPassword" id="studentPassword" name="studentPassword"
+                                        type="password" class="form-control form-control-lg validate"
+                                        placeholder="Password" aria-label="Password" autocomplete="off" required>
+                                </div>
+                                <div class="form-check form-switch">
+                                    <input ng-model="rememberMe" class="form-check-input" type="checkbox"
+                                        id="rememberMe" name="rememberMe">
+                                    <label class="form-check-label" for="rememberMe">Remember Me</label>
+                                </div>
+                                <div class="text-center">
+                                    <button ng-click="loginStudent()"
+                                        ng-disabled="loginForm.studentAdmission.$invalid || loginForm.studentPassword.$invalid"
+                                        id="btn-studentLogin" type="submit"
+                                        class="btn btn-lg bg-gradient-primary btn-lg w-100 mt-4 mb-0">Login</button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="card-footer text-center pt-0 px-lg-2 px-1">
+                            <p class="mb-4 text-xs mx-auto">
+                                Forgot password?
+                                <a href="/forgot-student-password"
+                                    class="text-primary text-gradient font-weight-bold">Reset</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer class="footer py-5">
+            <div class="container">
+                <div class="row">
+                    <div class="col-8 mx-auto text-center mt-1">
+                        <small class="mb-0 text-secondary">
+                            Copyright
+                            <script>
+                                document.write(new Date().getFullYear())
+                            </script> &copy; All rights reserved
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <%- include("./partials/footer.ejs") %>

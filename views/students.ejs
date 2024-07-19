@@ -1,0 +1,321 @@
+<%- include("./partials/header.ejs") %>
+    <%- include("./partials/nav.ejs") %>
+        <div class="container-fluid py-4">
+            <div class="d-sm-flex justify-content-between">
+                <div class="d-flex my-auto">
+                    <div>
+                        <button href="#" data-bs-toggle="modal" data-bs-target="#modalStudent"
+                            class="btn btn-icon bg-gradient-dark">
+                            Add student
+                        </button>
+                    </div>
+                    <div>
+                        <select ng-model="data_limit" id="data_limit" name="data_limit" class="form-control mx-3">
+                            <option disabled>Page size</option>
+                            <option selected="" value="10">10</option>
+                            <option value="20">20</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="d-flex">
+                    <div class="dropdown d-inline">
+                        <a href="javascript:;" class="btn btn-outline-dark dropdown-toggle" data-bs-toggle="dropdown"
+                            id="navbarDropdownMenuLink2" aria-expanded="false">
+                            Filters
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-lg-start px-2 py-3"
+                            aria-labelledby="navbarDropdownMenuLink2" style="">
+                            <li ng-repeat="s in courses"><a ng-click="btnFilter(s.courses._id)"
+                                    class="dropdown-item border-radius-md" href="javascript:;">{{s.courses.code}}</a>
+                            </li>
+                            <li>
+                                <hr class="horizontal dark my-2">
+                            </li>
+                            <li><a ng-click="deleteStudent()" class="dropdown-item border-radius-md text-danger"
+                                    href="javascript:;">Delete Selected</a></li>
+                        </ul>
+                    </div>
+                    <button class="btn btn-icon btn-outline-dark ms-2 export" data-type="csv" type="button">
+                        <span class="btn-inner--icon"><i class="ni ni-archive-2"></i></span>
+                        <span class="btn-inner--text">Export CSV</span>
+                    </button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="font-weight-bolder text-dark text-gradient">Students</h4>
+                            <p class="text-sm">From this page, you can add new students, edit existing student
+                                information, and delete students.</p>
+                        </div>
+                        <div class="dataTable-wrapper dataTable-loading no-footer sortable searchable fixed-columns">
+                            <div class="dataTable-container table-responsive">
+                                <table class="table table-hover table-flush dataTable-table" id="students-table" hidden="">
+                                    <thead class="thead-light">
+                                        <tr>
+                                            <th data-sortable="" style="width: 20.9375%;"><a
+                                                    ng-click="sort_with('adm');" href="#"
+                                                    class="dataTable-sorter">Adm</a></th>
+                                            <th><a
+                                                    ng-click="sort_with('name');" href="#"
+                                                    class="dataTable-sorter">Name</a></th>
+                                            <th data-sortable="" style="width: 23.2813%;"><a
+                                                    ng-click="sort_with('number');" href="#"
+                                                    class="dataTable-sorter">Phone</a></th>
+                                            <th data-sortable="" style="width: 22.8125%;"><a
+                                                    ng-click="sort_with('address');" href="#"
+                                                    class="dataTable-sorter">Address</a></th>
+                                            <th data-sortable="" style="width: 20.9375%;"><a
+                                                    ng-click="sort_with('gender');" href="#"
+                                                    class="dataTable-sorter">Gender</a></th>
+                                            <th data-sortable="" style="width: 15.3125%;"><a
+                                                    ng-click="sort_with('category');" href="#"
+                                                    class="dataTable-sorter">Category</a></th>
+                                                    <th data-sortable="" style="width: 15.3125%;"><a
+                                                        ng-click="sort_with('name');" href="#"
+                                                        class="dataTable-sorter">Course</a></th>
+                                            <th><a href="#">Update</a>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr
+                                            ng-repeat="s in searched = (students | filter:mySearch | orderBy : base :reverse) | beginning_data:(current_grid-1)*data_limit | limitTo:data_limit">
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" value="{{s._id}}"
+                                                            type="checkbox" name="studentCheck" id="studentCheck">
+                                                    </div>
+                                                    <p class="text-xs font-weight-bold ms-2 mb-0">{{s.adm}}</p>
+                                                </div>
+                                            </td>
+                                            <td class="text-xs font-weight-bold">
+                                                <div class="d-flex align-items-center">
+                                                    <div class="d-flex align-items-center">
+                                                        <div ng-show="(s.fname | limitTo: 1) == 'A' || (s.fname | limitTo: 1) == 'B' || (s.fname | limitTo: 1) == 'C' || (s.fname | limitTo: 1) == 'D' || (s.fname | limitTo: 1) == 'E' || (s.fname | limitTo: 1) == 'F'"
+                                                            class="avatar avatar-xs me-2 bg-gradient-dark">
+                                                            <span>{{s.fname | limitTo: 1}}</span>
+                                                        </div>
+                                                        <div ng-show="(s.fname | limitTo: 1) == 'G' || (s.fname | limitTo: 1) == 'H' || (s.fname | limitTo: 1) == 'I' || (s.fname | limitTo: 1) == 'J' || (s.fname | limitTo: 1) == 'K' || (s.fname | limitTo: 1) == 'L'"
+                                                            class="avatar avatar-xs me-2 bg-gradient-primary">
+                                                            <span>{{s.fname | limitTo: 1}}</span>
+                                                        </div>
+                                                        <div ng-show="(s.fname | limitTo: 1) == 'M' || (s.fname | limitTo: 1) == 'N' || (s.fname | limitTo: 1) == 'O' || (s.fname | limitTo: 1) == 'P' || (s.fname | limitTo: 1) == 'Q' || (s.fname | limitTo: 1) == 'R' || (s.fname | limitTo: 1) == 'Z'"
+                                                            class="avatar avatar-xs me-2 bg-gradient-info">
+                                                            <span>{{s.fname | limitTo: 1}}</span>
+                                                        </div>
+                                                        <div ng-show="(s.fname | limitTo: 1) == 'S' || (s.fname | limitTo: 1) == 'T' || (s.fname | limitTo: 1) == 'U' || (s.fname | limitTo: 1) == 'V' || (s.fname | limitTo: 1) == 'W' || (s.fname | limitTo: 1) == 'X' || (s.fname | limitTo: 1) == 'Y'"
+                                                            class="avatar avatar-xs me-2 bg-gradient-success">
+                                                            <span>{{s.fname | limitTo: 1}}</span>
+                                                        </div>
+                                                        <div class="flex-column">
+                                                            <h6 class="text-xs">{{s.fname}} {{s.mname}} {{s.lname}}
+                                                            </h6>
+                                                            <p class="text-xs text-secondary mb-0">
+                                                                {{s.email}}</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="font-weight-bold">
+                                                <span class="my-2 text-xs">{{s.phone}}</span>
+                                            </td>
+                                            <td class="text-xs font-weight-bold">
+                                                <span>{{s.address}}</span>
+                                            </td>
+                                            <td class="text-xs font-weight-bold">
+                                                <span class="my-2 text-xs">{{s.gender}}</span>
+                                            </td>
+                                            <td class="text-xs font-weight-bold">
+                                                <span class="my-2 text-xs">
+                                                    {{s.category}}
+                                                </span>
+                                            </td>
+                                            <td class="text-xs font-weight-bold">
+                                                <span ng-repeat="c in courses | filter: s.course" class="my-2 text-xs">
+                                                    {{c.courses.code}}
+                                                </span>
+                                            </td>
+                                            <td class="text-xs font-weight-bold">
+                                                <div class="d-flex align-items-center">
+                                                    <button
+                                                        ng-click="updateStudent(s._id, s.fname, s.mname, s.lname, s.email, s.gender, s.birthday, s.phone, s.address, s.category, s.course)"
+                                                        class="btn btn-icon-only btn-rounded btn-outline-info mb-0 me-2 btn-sm d-flex align-items-center justify-content-center"><i
+                                                            class="fa-solid fa-rotate" aria-hidden="true"></i></button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="dataTable-bottom">
+                                <div class="dataTable-info">Showing {{ searched.length }} of {{ students.length}}
+                                    entries</div>
+                                <nav class="dataTable-pagination">
+                                    <div pagination="" page="current_grid" on-select-page="page_position(page)"
+                                        total-items="students.length" items-per-page="data_limit" max-size="3"
+                                        class="dataTable-pagination-list font-weight-bold" previous-text="‹"
+                                        next-text="›"></div>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <footer class="footer py-5">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-8 mx-auto text-center mt-1">
+                            <small class="mb-0 text-secondary">
+                                Copyright
+                                <script>
+                                    document.write(new Date().getFullYear())
+                                </script> &copy; All rights reserved
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+
+        <div class="modal fade" id="modalStudent" tabindex="-1" role="dialog" aria-labelledby="modalStudent"
+            aria-hidden="true">
+            <div class="modal-dialog modal- modal-dialog-centered " role="document">
+                <div class="modal-content">
+                    <div class="modal-body p-0">
+                        <div class="card card-plain">
+                            <div class="card-header pb-0 text-left">
+                                <h4 class="font-weight-bolder text-dark text-gradient">{{title}} student</h4>
+                                <small>Enter the student's information into the appropriate fields.</small>
+                            </div>
+                            <div class="card-body pb-3">
+                                <form id="studentForm" name="studentForm" role="form text-left" novalidate>
+                                    <div class="row">
+                                        <div class="col-12 col-sm-4">
+                                            <label>First Name</label>
+                                            <input ng-model="fname" id="fname" name="fname" class="form-control"
+                                                type="text" placeholder="First Name" autofocus="on"
+                                                onfocus="focused(this)" onfocusout="defocused(this)" required>
+                                        </div>
+                                        <div class="col-12 col-sm-4">
+                                            <label>Middle Name</label>
+                                            <input ng-model="mname" id="mname" name="mname"
+                                                class="form-control validate" type="text" placeholder="Middle Name"
+                                                onfocus="focused(this)" onfocusout="defocused(this)" required>
+                                        </div>
+                                        <div class="col-12 col-sm-4">
+                                            <label>Last Name</label>
+                                            <input ng-model="lname" id="lname" name="lname"
+                                                class="form-control validate" type="text" placeholder="Last Name"
+                                                onfocus="focused(this)" onfocusout="defocused(this)" required>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-3">
+                                        <div class="col-12 col-sm-6">
+                                            <label>Email</label>
+                                            <input ng-model="email=(fname + lname + '@studa.com') | lowercase"
+                                                id="email" name="email" class="form-control validate" type="email"
+                                                placeholder="Email Address" onfocus="focused(this)"
+                                                onfocusout="defocused(this)" required>
+                                        </div>
+                                        <div class="col-12 col-sm-6">
+                                            <label>Gender</label>
+                                            <select ng-model="gender" class="form-control" name="gender" id="gender"
+                                                placeholder="Gender" required>
+                                                <option value="Male">Male</option>
+                                                <option value="Female">Female</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-3">
+                                        <div class="col-12 col-sm-6">
+                                            <label>Birthday</label>
+                                            <input ng-model="birthday" id="birthday" name="birthday"
+                                                class="form-control datepicker validate" type="date"
+                                                placeholder="Birthday" onfocus="focused(this)"
+                                                onfocusout="defocused(this)" required>
+                                        </div>
+                                        <div class="col-12 col-sm-6">
+                                            <label>Phone</label>
+                                            <input ng-model="phone" id="phone" name="phone"
+                                                class="form-control validate" type="tel" placeholder="Enter phone number"
+                                                onfocus="focused(this)" onfocusout="defocused(this)" required>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-3">
+                                        <div class="col-12 col-sm-4">
+                                            <label>Address</label>
+                                            <input ng-model="address" id="address" name="address"
+                                                class="form-control validate" type="text" placeholder="Enter address"
+                                                onfocus="focused(this)" onfocusout="defocused(this)" required>
+                                        </div>
+                                        <div class="col-12 col-sm-8">
+                                            <label>Category</label>
+                                            <select ng-model="category" class="form-control validate" name="category"
+                                                id="category" placeholder="Category" required>
+                                                <option value="Self Sponsored">Self Sponsored</option>
+                                                <option value="Government Funded">Government Funded</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-3">
+                                        <div class="col-12 col-sm-7">
+                                            <label>Course</label>
+                                            <select ng-model="course" class="form-control validate" name="course"
+                                                id="course" placeholder="Course" required>
+                                                <option ng-repeat="s in courses" value="{{s.courses._id}}">
+                                                    {{s.courses.name}}</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-12 col-sm-5">
+                                            <label>KCSE Index Number</label>
+                                            <input ng-model="index" id="index" name="index"
+                                                class="form-control validate" type="text" placeholder="Enter index number"
+                                                onfocus="focused(this)" onfocusout="defocused(this)" required>
+                                        </div>
+                                    </div>
+                                    <div class="button-row mt-4">
+                                        <button ng-click="saveStudent()"
+                                            ng-disabled="studentForm.fname.$invalid || studentForm.mname.$invalid || studentForm.lname.$invalid || studentForm.email.$invalid || studentForm.gender.$invalid || studentForm.birthday.$invalid || studentForm.phone.$invalid || studentForm.address.$invalid || studentForm.category.$invalid || studentForm.course.$invalid"
+                                            id="btn-saveStudent" class="btn bg-gradient-primary ms-auto mb-0"
+                                            type="submit">Submit</button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="card-footer text-secondary pt-0 px-sm-4 px-1">
+                                <small style="font-size: 13px;">&copy; By using this website, you agree to be bound by,
+                                    <a href="#" class="text-primary text-gradient" data-container="body" data-bs-toggle="popover" data-bs-placement="left"
+                                        data-bs-content="
+                                            1. Acceptance of Terms and Conditions. These terms and conditions (“Terms and Conditions”) govern your use of this website, including all pages within this website (collectively referred to herein below as this “Website”). These Terms & Conditions are binding and enforceable against all persons that access this Website. By accessing this Website, you acknowledge that you have read, understand, and agree, without limitation or qualification, to be bound by these Terms and Conditions.
+                                            2. Modification of Terms and Conditions. We reserve the right to change these Terms and Conditions at any time. Such changes, modifications, additions or deletions shall be effective immediately upon notice thereof, which may be given by means including, but not limited to, posting on this Website. Any use of this Website by you after such notice shall be deemed to constitute acceptance by you of such changes, modifications or additions.
+                                            3. Use of Website. This Website is owned and operated by us. You may not copy, reproduce"
+                                        data-container="body" data-animation="true">Terms & Conditions</a> set forth. If
+                                    you do not agree with
+                                    any of these Terms & Conditions, please do not use this website.</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <%- include("./partials/footer.ejs") %>
+
+            <script>
+               //if (document.getElementById('gender')) {
+               //    var element = document.getElementById('gender');
+               //    const example = new Choices(element, {});
+               //}
+               //if (document.getElementById('category')) {
+               //    var element = document.getElementById('category');
+               //    const example = new Choices(element, {});
+               //}
+               //if (document.getElementById('session')) {
+               //    var element = document.getElementById('session');
+               //    const example = new Choices(element, {});
+               //}
+            </script>

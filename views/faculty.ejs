@@ -1,0 +1,513 @@
+<%- include("./partials/header.ejs") %>
+    <%- include("./partials/nav.ejs") %>
+        <div class="container-fluid py-4">
+            <div class="row">
+                <div class="col-4">
+                    <div class="nav-wrapper position-relative end-0">
+                        <ul class="nav nav-pills nav-fill p-1" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link mb-0 px-0 py-1 active" data-bs-toggle="tab" href="#faculty"
+                                    role="tab" aria-controls="faculty" aria-selected="true">
+                                    Faculties
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link mb-0 px-0 py-1" data-bs-toggle="tab" href="#halls" role="tab"
+                                    aria-controls="halls" aria-selected="false">
+                                    Halls
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="tab-content mt-4">
+                        <div class="tab-pane fade show active" id="faculty" role="tabpanel" aria-labelledby="faculty">
+                            <div class="row mt-4">
+                                <div class="col-12">
+                                    <h4 class="font-weight-bolder text-dark text-gradient">University faculty</h4>
+                                    <p class="text-sm w-75">From this page, students can find information about the
+                                        professors that teach at the school. This includes their contact information,
+                                        office
+                                        hours, and course offerings.
+                                    </p>
+                                </div>
+                                <div>
+                                    <div class="row mt-4">
+                                        <div ng-repeat="s in faculties | limitTo: 1"
+                                            class="col-lg-4 col-md-6 col-12 mb-4">
+                                            <div class="card text-center move-on-hover">
+                                                <div class="overflow-hidden position-relative border-radius-lg bg-cover p-3"
+                                                    style="background-image: url('https://demos.creative-tim.com/soft-ui-design-system-pro/assets/img/curved-images/curved1.jpg')">
+                                                    <span class="mask bg-gradient-primary"></span>
+                                                    <div
+                                                        class="card-body position-relative z-index-1 d-flex flex-column mt-5">
+                                                        <h5 class="text-white font-weight-bolder">{{s.name}}</h5>
+                                                        <p class="text-white">{{s.description | limitTo: 100}}...</p>
+                                                        <a class="text-white text-sm font-weight-bolder mb-0 mt-4"
+                                                            href="javascript:;">
+                                                            Read More
+                                                            <i class="fas fa-arrow-right text-sm ms-1"
+                                                                aria-hidden="true"></i>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div ng-repeat="s in faculties | beginning_data: 1"
+                                            class="col-lg-4 col-md-6 col-12 mb-4">
+                                            <div class="card text-center move-on-hover">
+                                                <div class="overflow-hidden position-relative border-radius-lg bg-cover p-3"
+                                                    style="background-image: url('')">
+                                                    <span class="mask bg-gradient-dark opacity-6"></span>
+                                                    <div
+                                                        class="card-body position-relative z-index-1 d-flex flex-column mt-5">
+                                                        <h5 class="text-white font-weight-bolder">{{s.name}}</h5>
+                                                        <p class="text-white">{{s.description | limitTo: 100}}...</p>
+                                                        <a class="text-white text-sm font-weight-bolder mb-0 mt-4"
+                                                            href="javascript:;">
+                                                            Read More
+                                                            <i class="fas fa-arrow-right text-sm ms-1"
+                                                                aria-hidden="true"></i>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4 col-12 mb-4">
+                                            <div class="card border-dashed border-1 text-center h-100">
+                                                <div
+                                                    class="card-body d-flex flex-column justify-content-center text-center">
+                                                    <a data-bs-toggle="modal" data-bs-target="#modalFaculty"
+                                                        href="javascript:;">
+                                                        <i class="fa fa-plus text-dark h2 mb-1" aria-hidden="true"></i>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-pane fade" id="halls" role="tabpanel" aria-labelledby="halls">
+                            <div class="d-sm-flex justify-content-between">
+                                <div class="d-flex my-auto">
+                                    <div>
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#modalHall"
+                                            class="btn btn-icon bg-gradient-dark">
+                                            Add Hall
+                                        </a>
+                                    </div>
+                                    <div>
+                                        <select ng-model="data_limit" id="data_limit" name="data_limit"
+                                            class="form-control mx-3">
+                                            <option disabled>Page size</option>
+                                            <option selected="" value="10">10</option>
+                                            <option value="20">20</option>
+                                            <option value="50">50</option>
+                                            <option value="100">100</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="d-flex">
+                                    <div class="dropdown d-inline">
+                                        <a href="javascript:;" class="btn btn-outline-dark dropdown-toggle"
+                                            data-bs-toggle="dropdown" id="navbarDropdownMenuLink2"
+                                            aria-expanded="false">
+                                            Filters
+                                        </a>
+                                        <ul class="dropdown-menu dropdown-menu-lg-start px-2 py-3"
+                                            aria-labelledby="navbarDropdownMenuLink2" style="">
+                                            <li ng-repeat="s in faculties"><a ng-click="btnFilter(s.code)"
+                                                    class="dropdown-item border-radius-md"
+                                                    href="javascript:;">{{s.code}}</a></li>
+                                            <li>
+                                                <hr class="horizontal dark my-2">
+                                            </li>
+                                            <li><a ng-click="deleteHall()"
+                                                    class="dropdown-item border-radius-md text-danger"
+                                                    href="javascript:;">Delete Selected</a></li>
+                                        </ul>
+                                    </div>
+                                    <button class="btn btn-icon btn-outline-dark ms-2 export" data-type="csv"
+                                        type="button">
+                                        <span class="btn-inner--icon"><i class="ni ni-archive-2"></i></span>
+                                        <span class="btn-inner--text">Export CSV</span>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h4 class="font-weight-bolder text-dark text-gradient">Faculty halls</h4>
+                                            <p class="text-sm mb-0">
+                                                This is a list of all of the halls that are available in different
+                                                faculties.
+                                            </p>
+                                        </div>
+                                        <div
+                                            class="dataTable-wrapper dataTable-loading no-footer sortable searchable fixed-columns">
+                                            <div class="dataTable-container table-responsive">
+                                                <table class="table table-hover table-flush dataTable-table"
+                                                    id="datatable-search">
+                                                    <thead class="thead-light">
+                                                        <tr>
+                                                            <th data-sortable=""><a ng-click="sort_with('code');"
+                                                                    href="#" class="dataTable-sorter">Code</a></th>
+                                                            <th data-sortable=""><a ng-click="sort_with('name');"
+                                                                    href="#" class="dataTable-sorter">Hall
+                                                                    Name</a></th>
+                                                            <th data-sortable=""><a ng-click="sort_with('capacity');"
+                                                                    href="#" class="dataTable-sorter">
+                                                                    Capacity</a>
+                                                            </th>
+                                                            <th data-sortable=""><a ng-click="sort_with('faculty');"
+                                                                    href="#" class="dataTable-sorter">Faculty</a>
+                                                            </th>
+                                                            <th data-sortable=""><a ng-click="sort_with('date');"
+                                                                    href="#" class="dataTable-sorter">CreatedAt</a>
+                                                            </th>
+                                                            <th data-sortable=""><a ng-click="sort_with('date');"
+                                                                    href="#" class="dataTable-sorter">UpdatedAt</a>
+                                                            </th>
+                                                            <th data-sortable=""><a href="#">Update</a>
+                                                            </th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr
+                                                            ng-repeat="s in searched = (halls | filter:mySearch | orderBy : base :reverse) | beginning_data:(current_grid-1)*data_limit | limitTo:data_limit">
+                                                            <td>
+                                                                <div class="d-flex align-items-center">
+                                                                    <div class="form-check">
+                                                                        <input class="form-check-input"
+                                                                            value="{{s.halls._id}}" type="checkbox"
+                                                                            name="hallCheck" id="hallCheck">
+                                                                    </div>
+                                                                    <span class="text-xs font-weight-bold ms-2 mb-0">
+                                                                        {{s.halls.code}}
+                                                                    </span>
+                                                                </div>
+                                                            </td>
+                                                            <td class="text-xs font-weight-bold">
+                                                                <a ng-click="aboutCourse(s._id, s.code, s.name, s.description, s.type)"
+                                                                    href="#">
+                                                                    <div class="d-flex align-items-center">
+                                                                        <div class="d-flex align-items-center">
+                                                                            <div ng-show="(s.halls.name | limitTo: 1) == 'A' || (s.halls.name | limitTo: 1) == 'B' || (s.halls.name | limitTo: 1) == 'G' || (s.halls.name | limitTo: 1) == 'M' || (s.halls.name | limitTo: 1) == 'E' || (s.halls.name | limitTo: 1) == 'F'"
+                                                                                class="avatar avatar-xs me-2 bg-gradient-dark">
+                                                                                <span>{{s.halls.name | limitTo:
+                                                                                    1}}</span>
+                                                                            </div>
+                                                                            <div ng-show="(s.halls.name | limitTo: 1) == 'C' || (s.halls.name | limitTo: 1) == 'H' || (s.halls.name | limitTo: 1) == 'I' || (s.halls.name | limitTo: 1) == 'J' || (s.halls.name | limitTo: 1) == 'K' || (s.halls.name | limitTo: 1) == 'L'"
+                                                                                class="avatar avatar-xs me-2 bg-gradient-primary">
+                                                                                <span>{{s.halls.name | limitTo:
+                                                                                    1}}</span>
+                                                                            </div>
+                                                                            <div ng-show="(s.halls.name | limitTo: 1) == 'D' || (s.halls.name | limitTo: 1) == 'N' || (s.halls.name | limitTo: 1) == 'O' || (s.nhalls.name| limitTo: 1) == 'P' || (s.halls.name | limitTo: 1) == 'Q' || (s.halls.name | limitTo: 1) == 'R' || (s.halls.name | limitTo: 1) == 'Z'"
+                                                                                class="avatar avatar-xs me-2 bg-gradient-info">
+                                                                                <span>{{s.halls.name | limitTo:
+                                                                                    1}}</span>
+                                                                            </div>
+                                                                            <div ng-show="(s.halls.name | limitTo: 1) == 'S' || (s.halls.name | limitTo: 1) == 'T' || (s.halls.name | limitTo: 1) == 'U' || (s.halls.name | limitTo: 1) == 'V' || (s.halls.name | limitTo: 1) == 'W' || (s.halls.name | limitTo: 1) == 'X' || (s.halls.name | limitTo: 1) == 'Y'"
+                                                                                class="avatar avatar-xs me-2 bg-gradient-success">
+                                                                                <span>{{s.halls.name | limitTo:
+                                                                                    1}}</span>
+                                                                            </div>
+                                                                            <div class="flex-column">
+                                                                                <h6 class="text-xs">{{s.halls.name}}
+                                                                                </h6>
+                                                                                <p class="text-xs text-secondary mb-0">
+                                                                                    {{s.faculties.name}}</p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </a>
+                                                            </td>
+                                                            <td class="text-xs font-weight-bold">
+                                                                <span class="my-2 text-xs">
+                                                                    {{s.halls.capacity}}
+                                                                </span>
+                                                            </td>
+                                                            <td class="text-xs font-weight-bold">
+                                                                <span class="my-2 text-xs">
+                                                                    {{s.faculties.code}}
+                                                                </span>
+                                                            </td>
+                                                            <td class="text-xs font-weight-bold">
+                                                                <span class="my-2 text-xs">
+                                                                    {{s.halls.createdAt | date: 'dd-MM-yyyy'}}
+                                                                </span>
+                                                            </td>
+                                                            <td class="text-xs font-weight-bold">
+                                                                <span class="my-2 text-xs">
+                                                                    {{s.halls.updatedAt | date: 'dd-MM-yyyy'}}
+                                                                </span>
+                                                            </td>
+                                                            <td class="text-xs font-weight-bold">
+                                                                <div class="d-flex align-items-center">
+                                                                    <button
+                                                                        ng-click="updateHall(s.halls._id, s.halls.name, s.halls.capacity, s.faculties._id)"
+                                                                        class="btn btn-icon-only btn-rounded btn-outline-info mb-0 me-2 btn-sm d-flex align-items-center justify-content-center"><i
+                                                                            class="fa-solid fa-rotate"
+                                                                            aria-hidden="true"></i></button>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <div class="dataTable-bottom">
+                                                <div class="dataTable-info">Showing {{ searched.length }} of {{
+                                                    halls.length}}
+                                                    entries</div>
+                                                <nav class="dataTable-pagination">
+                                                    <div pagination="" page="current_grid"
+                                                        on-select-page="page_position(page)" total-items="halls.length"
+                                                        items-per-page="data_limit" max-size="3"
+                                                        class="dataTable-pagination-list font-weight-bold"
+                                                        previous-text="‹" next-text="›"></div>
+                                                </nav>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <footer class="footer py-5">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-8 mx-auto text-center mt-1">
+                            <small class="mb-0 text-secondary">
+                                Copyright
+                                <script>
+                                    document.write(new Date().getFullYear())
+                                </script> &copy; All rights reserved
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+
+        <!--Add Faculty-->
+        <div class="modal fade" id="modalFaculty" tabindex="-1" role="dialog" aria-labelledby="modalFaculty"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered " role="document">
+                <div class="modal-content">
+                    <div class="modal-body p-0">
+                        <div class="card card-plain">
+                            <div class="card-header pb-0 text-left">
+                                <h4 class="font-weight-bolder">{{title}} faculty</h4>
+                                <small>Enter the faculty information into the appropriate fields.</small>
+                            </div>
+                            <div class="card-body pb-3">
+                                <form id="facultyForm" name="facultyForm" role="form text-left" novalidate>
+                                    <div class="row mt-3">
+                                        <div class="col-12 col-sm-4">
+                                            <label>Faculty Code</label>
+                                            <input ng-model="code" id="code" name="code" class="form-control validate"
+                                                type="text" placeholder="Enter Code" onfocus="focused(this)"
+                                                onfocusout="defocused(this)" required>
+                                        </div>
+                                        <div class="col-12 col-sm-8">
+                                            <label>Faculty Name</label>
+                                            <input ng-model="name" id="name" name="name" class="form-control validate"
+                                                type="text" placeholder="Enter Name" onfocus="focused(this)"
+                                                onfocusout="defocused(this)" required>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-3">
+                                        <div class="col-12 col-sm-12">
+                                            <label>Faculty Description</label>
+                                            <textarea ng-model="description" class="form-control" name="description"
+                                                id="description" rows="5" placeholder="Enter Description"
+                                                required></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="button-row mt-4">
+                                        <button ng-click="saveFaculty()"
+                                            ng-disabled="facultyForm.code.$invalid || facultyForm.name.$invalid || facultyForm.description.$invalid"
+                                            id="btn-saveFaculty" class="btn bg-gradient-primary ms-auto mb-0"
+                                            type="submit">Submit</button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="card-footer text-secondary pt-0 px-sm-4 px-1">
+                                <small style="font-size: 13px;">&copy; By using this website, you agree to be bound by,
+                                    <a href="#" class="text-primary text-gradient" data-container="body" data-bs-toggle="popover" data-bs-placement="left"
+                                        data-bs-content="
+                                            1. Acceptance of Terms and Conditions. These terms and conditions (“Terms and Conditions”) govern your use of this website, including all pages within this website (collectively referred to herein below as this “Website”). These Terms & Conditions are binding and enforceable against all persons that access this Website. By accessing this Website, you acknowledge that you have read, understand, and agree, without limitation or qualification, to be bound by these Terms and Conditions.
+                                            2. Modification of Terms and Conditions. We reserve the right to change these Terms and Conditions at any time. Such changes, modifications, additions or deletions shall be effective immediately upon notice thereof, which may be given by means including, but not limited to, posting on this Website. Any use of this Website by you after such notice shall be deemed to constitute acceptance by you of such changes, modifications or additions.
+                                            3. Use of Website. This Website is owned and operated by us. You may not copy, reproduce"
+                                        data-container="body" data-animation="true">Terms & Conditions</a> set forth. If
+                                    you do not agree with
+                                    any of these Terms & Conditions, please do not use this website.</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--About Course-->
+        <div class="modal fade" id="modalAboutCourse" tabindex="-1" role="dialog" aria-labelledby="modalAboutCourse"
+            aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered " role="document">
+                <div class="modal-content">
+                    <div class="modal-body p-0">
+                        <div class="card card-plain">
+                            <div class="card-header pb-0 text-left">
+                                <h4 class="font-weight-bolder">{{name}} ({{code}})</h4>
+                                <small>{{type}} course</small>
+                            </div>
+                            <div class="card-body pb-3">
+                                <h5>Course description</h5>
+                                <p>{{description}}</p>
+                                <h5>Course units</h5>
+                                <br>
+                                <h6 class="text-primary text-gradient">1st Year 1st Semester</h6>
+                                <p ng-repeat="s in units | filter: id | filter: '1st Year 1st Sem'">
+                                    {{s.units.code}}
+                                    {{s.units.name}}</p>
+                                <br>
+                                <h6 class="text-primary text-gradient">1st Year 2nd Semester</h6>
+                                <p ng-repeat="s in units | filter: id | filter: '1st Year 2nd Sem'">
+                                    {{s.units.code}}
+                                    {{s.units.name}}</p>
+                                <br>
+                                <h6 class="text-primary text-gradient">2nd Year 1st Semester</h6>
+                                <p ng-repeat="s in units | filter: id | filter: '2nd Year 1st Sem'">
+                                    {{s.units.code}}
+                                    {{s.units.name}}</p>
+                                <br>
+                                <h6 class="text-primary text-gradient">2nd Year 2nd Semester</h6>
+                                <p ng-repeat="s in units | filter: id | filter: '2nd Year 2nd Sem'">
+                                    {{s.units.code}}
+                                    {{s.units.name}}</p>
+                                <br>
+                                <h6 class="text-primary text-gradient">3rd Year 1st Semester</h6>
+                                <p ng-repeat="s in units | filter: id | filter: '3rd Year 1st Sem'">
+                                    {{s.units.code}}
+                                    {{s.units.name}}</p>
+                                <br>
+                                <h6 class="text-primary text-gradient">3rd Year 2nd Semester</h6>
+                                <p ng-repeat="s in units | filter: id | filter: '3rd Year 2nd Sem'">
+                                    {{s.units.code}}
+                                    {{s.units.name}}</p>
+                                <br>
+                                <h6 class="text-primary text-gradient">4th Year 1st Semester</h6>
+                                <p ng-repeat="s in units | filter: id | filter: '4th Year 1st Sem'">
+                                    {{s.units.code}}
+                                    {{s.units.name}}</p>
+                                <br>
+                                <h6 class="text-primary text-gradient">4th Year 2nd Semester</h6>
+                                <p ng-repeat="s in units | filter: id | filter: '4th Year 2nd Sem'">
+                                    {{s.units.code}}
+                                    {{s.units.name}}</p>
+                                <br>
+                                <h5>Faculty</h5>
+                                <p ng-repeat="s in facultyLec">{{s}}</p>
+                            </div>
+                            <div class="card-footer text-secondary pt-0 px-sm-4 px-1">
+                                <small style="font-size: 13px;">&copy; By using this website, you agree to be bound by,
+                                    <a href="#" class="text-primary text-gradient" data-container="body" data-bs-toggle="popover" data-bs-placement="left"
+                                        data-bs-content="
+                                            1. Acceptance of Terms and Conditions. These terms and conditions (“Terms and Conditions”) govern your use of this website, including all pages within this website (collectively referred to herein below as this “Website”). These Terms & Conditions are binding and enforceable against all persons that access this Website. By accessing this Website, you acknowledge that you have read, understand, and agree, without limitation or qualification, to be bound by these Terms and Conditions.
+                                            2. Modification of Terms and Conditions. We reserve the right to change these Terms and Conditions at any time. Such changes, modifications, additions or deletions shall be effective immediately upon notice thereof, which may be given by means including, but not limited to, posting on this Website. Any use of this Website by you after such notice shall be deemed to constitute acceptance by you of such changes, modifications or additions.
+                                            3. Use of Website. This Website is owned and operated by us. You may not copy, reproduce"
+                                        data-container="body" data-animation="true">Terms & Conditions</a> set forth. If
+                                    you do not agree with
+                                    any of these Terms & Conditions, please do not use this website.</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add Hall -->
+        <div class="modal fade" id="modalHall" tabindex="-1" role="dialog" aria-labelledby="modalHall"
+            aria-hidden="true">
+            <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-body p-0">
+                        <div class="card card-plain">
+                            <div class="card-header pb-0 text-left">
+                                <h4 class="font-weight-bolder">{{title}} hall</h4>
+                                <small>Enter the hall information into the appropriate fields.</small>
+                            </div>
+                            <div class="card-body pb-3">
+                                <form id="hallForm" name="hallForm" role="form text-left" novalidate>
+                                    <div class="row">
+                                        <div class="col-12 col-sm-12">
+                                            <label>Hall Name</label>
+                                            <input ng-model="name" id="name" name="name" class="form-control validate"
+                                                type="text" placeholder="Enter Name" onfocus="focused(this)"
+                                                onfocusout="defocused(this)" required>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-3">
+                                        <div class="col-12 col-sm-12">
+                                            <label>Max Capacity</label>
+                                            <input ng-model="capacity" id="capacity" name="capacity"
+                                                class="form-control validate" type="number"
+                                                placeholder="Enter Max Capacity" onfocus="focused(this)"
+                                                onfocusout="defocused(this)" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-sm-12">
+                                        <label>Hall Faculty</label>
+                                        <select ng-model="faculty" class="form-control validate" name="faculty"
+                                            id="faculty" required>
+                                            <option selected="" disabled>Hall Faculty</option>
+                                            <option ng-repeat="s in faculties" value="{{s._id}}">{{s.name}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div class="button-row mt-4">
+                                        <button ng-click="saveHall()"
+                                            ng-disabled="hallForm.name.$invalid || hallForm.capacity.$invalid || hallForm.faculty.$invalid"
+                                            id="btn-saveHall" class="btn bg-gradient-primary ms-auto mb-0"
+                                            type="submit">Submit</button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="card-footer text-secondary pt-0 px-sm-4 px-1">
+                                <small style="font-size: 13px;">&copy; By using this website, you agree to be bound by,
+                                    <a href="#" class="text-primary text-gradient" data-container="body" data-bs-toggle="popover" data-bs-placement="left"
+                                        data-bs-content="
+                                            1. Acceptance of Terms and Conditions. These terms and conditions (“Terms and Conditions”) govern your use of this website, including all pages within this website (collectively referred to herein below as this “Website”). These Terms & Conditions are binding and enforceable against all persons that access this Website. By accessing this Website, you acknowledge that you have read, understand, and agree, without limitation or qualification, to be bound by these Terms and Conditions.
+                                            2. Modification of Terms and Conditions. We reserve the right to change these Terms and Conditions at any time. Such changes, modifications, additions or deletions shall be effective immediately upon notice thereof, which may be given by means including, but not limited to, posting on this Website. Any use of this Website by you after such notice shall be deemed to constitute acceptance by you of such changes, modifications or additions.
+                                            3. Use of Website. This Website is owned and operated by us. You may not copy, reproduce"
+                                        data-container="body" data-animation="true">Terms & Conditions</a> set forth. If
+                                    you do not agree with
+                                    any of these Terms & Conditions, please do not use this website.</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <%- include("./partials/footer.ejs") %>
+
+            <script>
+                //if (document.getElementById('type')) {
+                //    var element = document.getElementById('type');
+                //    const example = new Choices(element, {});
+                //}
+                //if (document.getElementById('status')) {
+                //    var element = document.getElementById('status');
+                //    const example = new Choices(element, {});
+                //}
+            </script>

@@ -1,0 +1,125 @@
+
+        html {
+            scroll-behavior: smooth;
+          }
+          
+          /* width */
+          ::-webkit-scrollbar {
+            width: 5px;
+          }
+          
+          /* Track */
+          ::-webkit-scrollbar-track {
+            background-color: transparent;
+          }
+          
+          /* Handle */
+          ::-webkit-scrollbar-thumb {
+            background: #8392ab;
+            border-radius: 1rem;
+            background-clip: content-box;
+          }
+          
+          /* Handle on hover */
+          ::-webkit-scrollbar-thumb:hover {
+            background: #344767;
+          }
+          
+          .async-hide {
+            opacity: 0 !important
+          }
+          
+          /* barcode container */
+          .anim-box {
+            position: relative;
+            width: 280px;
+            height: 280px;
+            padding: 20px 20px;
+            transition: transform .6s ease-out;
+          }
+          
+          /* adds the 4 corners */
+          .anim-box:before,
+          .anim-box:after,
+          .anim-box>:first-child:before,
+          .anim-box>:first-child:after {
+            position: absolute;
+            width: 8%;
+            height: 8%;
+            border-color: black;
+            border-style: solid;
+            content: ' ';
+          }
+          
+          /* top left corner */
+          .anim-box:before {
+            top: 0;
+            left: 0;
+            border-width: 2px 0 0 2px;
+          }
+          
+          /* top right corner */
+          .anim-box:after {
+            top: 0;
+            right: 0;
+            border-width: 2px 2px 0 0;
+          }
+          
+          /* bottom right corner */
+          .anim-box>:first-child:before {
+            bottom: 0;
+            right: 0;
+            border-width: 0 2px 2px 0;
+          }
+          
+          /* bottom left corner */
+          .anim-box>:first-child:after {
+            bottom: 0;
+            left: 0;
+            border-width: 0 0 2px 2px;
+          }
+          
+          .anim-box .scanner {
+            animation-play-state: running;
+          }
+          
+          /* animated laser beam */
+          .scanner {
+            width: 75%;
+            height: 3px;
+            background-color: red;
+            opacity: 0.7;
+            position: absolute;
+            box-shadow: 0px 0px 8px 10px rgba(170, 11, 23, 0.49);
+            top: 50%;
+            z-index: 1;
+            animation-name: scan;
+            animation-duration: 4s;
+            animation-timing-function: linear;
+            animation-iteration-count: infinite;
+            animation-play-state: paused;
+          }
+          
+          @keyframes scan {
+            0% {
+              box-shadow: 0px 0px 8px 10px rgba(170, 11, 23, 0.49);
+              top: 50%;
+            }
+          
+            25% {
+              box-shadow: 0px 6px 8px 10px rgba(170, 11, 23, 0.49);
+              top: 5px;
+            }
+          
+            75% {
+              box-shadow: 0px -6px 8px 10px rgba(170, 11, 23, 0.49);
+              top: 98%;
+            }
+          }
+          
+          @media(min-height: 70vh) {
+            .rspv {
+              height: 53vh;
+            }
+          }
+              
